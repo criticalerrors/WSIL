@@ -9,7 +9,7 @@ class Hello extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {text: 'Hello from React-Django-Heroku',
+        this.state = {text: "Welcome",
             list: props.context.example_list };
     }
 
