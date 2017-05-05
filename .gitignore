@@ -3,3 +3,8 @@
 node_modules
 cvd/assets/dist
 venv
+.DS_Store
+cvd/__pycache__/
+cvd/migrations/__pycache__/
+cvd/templatetags/__pycache__/
+mainapp/__pycache__/
