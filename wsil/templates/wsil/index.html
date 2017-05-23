@@ -1,4 +1,4 @@
-{% extends "cvd/base.html" %}
+{% extends "wsil/base.html" %}
 
 {% load render_bundle from webpack_loader %}
 {% load static %}
@@ -21,6 +21,5 @@
         <i class="fa fa-lg fa-spinner fa-spin"></i><br><br>
         <i class="pending">Loading components...</i><br><br>
     </div>
-    {% render_bundle 'main' %}
 
 {% endblock %}

@@ -15,7 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-APP_NAME = 'CVDevelopers'
+APP_NAME = 'WSIL'
 
 
 # Quick-start development settings - unsuitable for production
@@ -30,7 +30,7 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
-    'cvd.apps.CVDConfig',
+    'wsil.apps.WSILConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -134,7 +134,7 @@ STATIC_URL = '/static/'
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
-    os.path.join(BASE_DIR, 'cvd/assets'),
+    os.path.join(BASE_DIR, 'wsil/assets'),
 ]
 
 # Simplified static file serving.

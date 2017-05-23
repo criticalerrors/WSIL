@@ -12,11 +12,11 @@ module.exports = {
     //the entry point we created earlier. Note that './' means
     //your current directory. You don't have to specify the extension  now,
     //because you will specify extensions later in the `resolve` section
-    entry: './cvd/assets/js/index',
+    entry: './wsil/assets/js/index',
 
     output: {
         //where you want your compiled bundle to be stored
-        path: path.resolve('./cvd/assets/dist/'),
+        path: path.resolve('./wsil/assets/dist/'),
         //naming convention webpack should use for your files
         filename: '[name]-[hash].js',
     },

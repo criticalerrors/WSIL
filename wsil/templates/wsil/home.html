@@ -1,0 +1,24 @@
+{% extends "wsil/base.html" %}
+
+{% load render_bundle from webpack_loader %}
+{% load static %}
+{% load jsonify %}
+
+{% block title %}
+    {{ APP_NAME }}
+{% endblock %}
+{% block head %}
+    {{ block.super }}
+{% endblock %}
+
+{% block main %}
+
+    <div id="container" class="container text-center">
+    <h1>HOME</h1>
+        <br/>
+        <i class="fa fa-lg fa-spinner fa-spin"></i><br><br>
+        <i class="pending">Loading components...</i><br><br>
+    </div>
+
+
+{% endblock %}
