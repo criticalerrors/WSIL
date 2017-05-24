@@ -4,39 +4,73 @@
 <head>
     {% block head %}
         <meta charset="UTF-8">
+                <!-- Bootstrap Core CSS -->
+
         <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+
+    <!-- Fonts -->
+	<link href="{% static 'css/animate.css'%}" rel="stylesheet" />
+    <!-- Squad theme CSS -->
+    <link href="{% static 'css/style.css'%}" rel="stylesheet" type="text/css">
+	<link href="{% static 'color/default.css'%}" rel="stylesheet" type="text/css">
         <title>{% block title %}{% endblock %}</title>
     {% endblock %}
 </head>
 <body>
 {% block navbar %}
-    <nav class="navbar navbar-inverse">
+  <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="#">Project name</a>
+                <a class="navbar-brand" style="color:blue" href="">
+                    <h2 style="color:white">WSIL</h2>
+                </a>
             </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div><!--/.nav-collapse -->
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#intro">Home</a></li>
+        <li><a href="#about">About</a></li>
+		<li><a href="#service">Service</a></li>
+		<li><a href="#contact">Contact</a></li>
+      </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
+        <!-- /.container -->
     </nav>
+
 {% endblock %}
+
 {% block container %}
+
+
+
+
     <div class="container">
+
         {% block main %}
+        <section id="intro" class="intro">
+
+		<div class="slogan">
+			<h2>WELCOME TO <span class="text_color">WSIL</span> </h2>
+
+            <p><h3 style="color:white">Click to Enter and Explore the WSIL platform</h3>
+        </p>
+        </div>
+		<div class="page-scroll">
+			<a href="home" class="btn btn-circle">
+				<i class="fa fa-angle-double-down animated"></i>
+			</a>
+		</div>
+    </section>
         {% endblock %}
+
     </div>
 {% endblock %}
 {% block script %}

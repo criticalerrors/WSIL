@@ -13,13 +13,9 @@
         window.props = {{ props | jsonify }};
     </script>
 {% endblock %}
-
+{% block container %}
 {% block main %}
+{{ block.super }}
 
-    <div id="container" class="container text-center">
-        <br/>
-        <i class="fa fa-lg fa-spinner fa-spin"></i><br><br>
-        <i class="pending">Loading components...</i><br><br>
-    </div>
-
+{% endblock %}
 {% endblock %}
