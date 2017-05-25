@@ -3,7 +3,6 @@
 {% load render_bundle from webpack_loader %}
 {% load static %}
 {% load jsonify %}
-
 {% block title %}
     {{ APP_NAME }}
 {% endblock %}
@@ -14,8 +13,8 @@
     </script>
 {% endblock %}
 {% block container %}
-{% block main %}
-{{ block.super }}
+    {{ block.super }}
 
 {% endblock %}
-{% endblock %}
+
+

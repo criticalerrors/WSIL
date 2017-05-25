@@ -18,63 +18,65 @@
         <title>{% block title %}{% endblock %}</title>
     {% endblock %}
 </head>
-<body>
-{% block navbar %}
-  <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
-                    <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" style="color:blue" href="">
-                    <h2 style="color:white">WSIL</h2>
-                </a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#intro">Home</a></li>
-        <li><a href="#about">About</a></li>
-		<li><a href="#service">Service</a></li>
-		<li><a href="#contact">Contact</a></li>
-      </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-{% endblock %}
-
+<body style="background-image: url({% static 'img/sfondo.jpg'%})">
+<div class="container-fluid"><!--Container principale-->
 {% block container %}
 
+	<div class="row">
+		<div class="col-md-12">
+
+			{% block navbar %}
+            <nav class="navbar navbar-custom" role="navigation">
+				<div class="navbar-header">
+
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+						 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button> <a class="navbar-brand" href="" style="color:white;"><h2>WSIL</h2></a>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="active">
+							<a href="">HOME</a>
+						</li>
+						<li>
+							<a href="http://">ABOUT</a>
+						</li>
+						<li>
+							<a href="#">CONTACT</a>
+						</li>
+					</ul>
 
 
+				</div>
 
-    <div class="container">
-
-        {% block main %}
-        <section id="intro" class="intro">
-
-		<div class="slogan">
-			<h2>WELCOME TO <span class="text_color">WSIL</span> </h2>
-
-            <p><h3 style="color:white">Click to Enter and Explore the WSIL platform</h3>
-        </p>
+			</nav>
+            {% endblock %}
         </div>
-		<div class="page-scroll">
+    </div><!--Prima row gird system-->
+    <div class="row">
+          <div class="col-md-3">
+    </div>
+			<div class="col-md-6">
+				<h1 style="text-align: center;color:white">WELCOME TO <span class="text_color">WSIL</span> </h1>
+
+            <p><h2 style="text-align: center;color:white">Click to Enter and Explore the WSIL platform</h2>
+        </p>
+			</div>
+
+        		</div><!--Seconda row gird system-->
+    <div class="row"><!--terza row gird system (bottone)-->
+             <div class="col-md-12" style="text-align: center">
+                  <div class="page-scroll">
 			<a href="home" class="btn btn-circle">
 				<i class="fa fa-angle-double-down animated"></i>
 			</a>
-		</div>
-    </section>
-        {% endblock %}
+                  </div>
+             </div>
 
     </div>
 {% endblock %}
-{% block script %}
-    <script type="text/js" src="{% static 'js/bootstrap.min.js' %}"></script>
-{% endblock %}
+
+</div>
 </body>
 </html>
