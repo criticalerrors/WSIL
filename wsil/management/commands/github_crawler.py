@@ -54,8 +54,7 @@ def start():
                     first_h = 0
                 save_into_db()
                 word = last_y + "-" + last_m + "-" + last_d + "-" + last_h
-                t = threading.Thread(target=save_into_file, args=(word, ))
-                t.start()
+                save_into_file(word)
 
 
 def analyze_file(wfile):
