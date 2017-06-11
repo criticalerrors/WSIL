@@ -2,7 +2,7 @@ import gzip
 from urllib import request
 import json
 import threading
-from ..models import RepositoryUsingIt
+from wsil.models import RepositoryUsingIt
 from django.core.exceptions import ObjectDoesNotExist
 
 allowed_types = ['CreateEvent']
