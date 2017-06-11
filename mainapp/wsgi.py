@@ -17,7 +17,3 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mainapp.settings")
 
 application = get_wsgi_application()
 application = DjangoWhiteNoise(application)
-
-
-from wsil.script import github_crawler
-github_crawler.start()
