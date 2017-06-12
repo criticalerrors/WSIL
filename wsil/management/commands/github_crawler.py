@@ -48,7 +48,11 @@ def start():
                     except Exception as ex:
                         print(ex)
                     last_y, last_m, last_d, last_h = yy, mm, dd, hh
-                    analyze_file("file.gz")
+                    try:
+                        analyze_file("file.gz")
+                    except Exception as ex:
+                        print(ex)
+                        continue
                     first_m = 1
                     first_d = 1
                     first_h = 0
