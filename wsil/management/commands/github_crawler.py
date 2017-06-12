@@ -65,6 +65,8 @@ def analyze_file(wfile):
                 continue
             if 'language' not in obj['repository'].keys():
                 continue
+            if obj['repository'] is None or obj['repository']['language'] is None:
+                continue
             language = obj['repository']['language']
             if language in count_dict:
                 count_dict[language] += 1
@@ -79,12 +81,19 @@ def save_into_file(word):
 
 def save_into_db():
     for language in count_dict:
+        if language is None:
+            print("NONE")
+            continue
         try:
             language_instance = RepositoryUsingIt.objects.get(language=language)
             language_instance.repository_count = count_dict[language]
             language_instance.save()
         except ObjectDoesNotExist as odne:
-            language_instance = RepositoryUsingIt.create(language_name=language, language_count=count_dict[language])
-            language_instance.save()
+            try:
+                language_instance = RepositoryUsingIt.create(language_name=language, language_count=count_dict[language])
+                language_instance.save()
+            except Exception as ex:
+                print(language)
+                print(ex)
     logger.info("Data saved into db")
 
