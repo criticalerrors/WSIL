@@ -69,4 +69,7 @@ class Features(models.Model):
 """Job(?job_title, ?description, ?post_date, ?company_name, ?company_url,
 ?location_name, ?lat, ?lon, ?query)"""
 
-"""Suggestion(?keyword, ?suggested_keyword):-"""
+
+class Suggestion(models.Model):
+    keyword = models.CharField(max_length=30)
+    suggested_keyword = models.CharField(max_length=30)

@@ -13,53 +13,57 @@
     </script>
 {% endblock %}
 {% block container %}
-   <div class="row">
-		<div class="col-md-12">
-    {% block navbar %}
-        {{ block.super }}
+    <div class="row">
+        <div class="col-md-12">
+            {% block navbar %}
+                {{ block.super }}
 
-        {% endblock %}
+            {% endblock %}
         </div>
-   </div>
+    </div>
     <div class="row">
 
-    		<div class="col-md-2">
-            <div class="img-rounded"style="background-color: white;opacity:0.5;text-align:center">
-                <ul style="list-style-type: none">
-                 <h3 style="color:black">Top10 LANGUAGE</h3>
-                {% for language in top10  %}
-                    <h5>
-                       <a href="{{ language.language | lower }}">
-                           <li style="color:black"><span>{{ forloop.counter }} -</span> {{ language.language }}</li>
-                       </a>
-                    </h5>
-                {% endfor %}
+        <div class="col-md-2">
+            <div class="img-rounded page" >
+                <ul class="top-lang-list">
+                    <h3 style="color:black">Top10 LANGUAGE</h3>
+                    {% for language in top10  %}
+                        <h5>
+                            <a href="{{ language.language | lower }}">
+                                <li style="color:black"><span>{{ forloop.counter }} -</span> {{ language.language }}</li>
+                            </a>
+                        </h5>
+                    {% endfor %}
                 </ul>
             </div>
-            </div>
-            <div class="col-md-8">
+        </div>
+        <div class="col-md-8">
 
-                <div style="background-color: white;opacity:0.5;text-align:center">
-                <h1>INSERISCI Le cose dentro</h1>
-                <h1>INSERISCI Le cose dentro</h1>
-                <h1>INSERISCI Le cose dentro</h1>
-                <h1>INSERISCI Le cose dentro</h1>
-                <h1>INSERISCI Le cose dentro</h1>
-                <h1>INSERISCI Le cose dentro</h1>
-
-                </div>
-            </div>
-
-             <div class="col-md-2">
-
-                <div style="background-color: white;opacity:0.5;text-align:center">
-                <h1>INSERISCI Le cose dentro</h1>
-                <h1>INSERISCI Le cose dentro</h1>
-                    <h1>INSERISCI Le cose dentro</h1>
-
+            <div class="page">
+                <div>
+                    <div class='search-box'>
+                        <form class='search-form'>
+                            <input class='form-control' placeholder='ex: Ruby, Rails, Java, CSS, Javascript, Node, C#, SQL, etc.' type='text'>
+                            <button class='btn btn-link search-btn'>
+                                <i class='glyphicon glyphicon-search'></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
             </div>
+        </div>
+
+        <div class="col-md-2">
+
+            <div class="page">
+                <h1>INSERISCI Le cose dentro</h1>
+                <h1>INSERISCI Le cose dentro</h1>
+                <h1>INSERISCI Le cose dentro</h1>
+
+            </div>
+
+        </div>
 
 
     </div>

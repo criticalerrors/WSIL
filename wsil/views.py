@@ -1,7 +1,12 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from .models import RepositoryUsingIt
+from .models import RepositoryUsingIt, Suggestion
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+from rest_framework import generics
+from wsil.serializer import SuggestionSerializer
+
 
 # Create your views here.
 
@@ -23,6 +28,15 @@ class MainHomeView(TemplateView):
         context = super(MainHomeView, self).get_context_data(**kwargs)
         context['top10'] = RepositoryUsingIt.objects.all().order_by('-repository_count')[:10]
         return context
+
+
+##### REST
+
+class SuggestedView(generics.ListAPIView):
+    serializer_class = SuggestionSerializer
+
+    def get_queryset(self):
+        return Suggestion.objects.filter(keyword=self.kwargs['kw'])
 
 
 def handler404(request):

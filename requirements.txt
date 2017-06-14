@@ -7,3 +7,4 @@ django-webpack-loader
 django-jsonify
 scrapy
 scrapy-djangoitem
+djangorestframework
