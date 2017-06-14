@@ -10,6 +10,7 @@
     {{ block.super }}
     <script>
         window.props = {{ props | jsonify }};
+        window.props.django_url = {{ url }};
     </script>
 {% endblock %}
 {% block container %}
@@ -30,7 +31,7 @@
                     {% for language in top10  %}
                         <h5>
                             <a href="{{ language.language | lower }}">
-                                <li style="color:black"><span>{{ forloop.counter }} -</span> {{ language.language }}</li>
+                                <li class="list-link"><span>{{ forloop.counter }} -</span> {{ language.language }}</li>
                             </a>
                         </h5>
                     {% endfor %}
@@ -40,17 +41,10 @@
         <div class="col-md-8">
 
             <div class="page">
-                <div>
-                    <div class='search-box'>
-                        <form class='search-form'>
-                            <input class='form-control' placeholder='ex: Ruby, Rails, Java, CSS, Javascript, Node, C#, SQL, etc.' type='text'>
-                            <button class='btn btn-link search-btn'>
-                                <i class='glyphicon glyphicon-search'></i>
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                <div id="search-bar">
 
+                </div>
+                {% render_bundle 'main'%}
             </div>
         </div>
 

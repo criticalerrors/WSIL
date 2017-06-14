@@ -1,33 +1,58 @@
 /**
  * Created by ddipa on 28/03/2017.
  */
-/* NOT NOW
+
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-class Hello extends React.Component {
+class SearchBar extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {text: "Welcome",
-            list: props.context.example_list };
+        this.state = {suggested: [] };
+        this.search = this.search.bind(this);
+        this.updateSearch = this.updateSearch.bind(this);
+    }
+    updateSearch() {
+        this.search(this.refs.query.value);
     }
 
+    search( query = '' ) {
+
+        let url = "http://localhost:8000/api/suggest/"+ query + "?format=json"; //TODO
+        if (url.endsWith('/')) {
+            url = url.substr(0, url.length);
+        }
+        console.log(url);
+        fetch(url)
+            .then(function(data) {
+                return data.json();
+            })
+            .then((jsonData)=>{
+                this.setState({suggested: jsonData});
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    }
+
+
     render() {
+        let suggestion = this.state.suggested.map(function(sugg){
+            return <h5><li className="list-link"><a href={sugg.suggested_keyword}>{sugg.suggested_keyword}</a></li></h5>;
+        });
+        console.log(suggestion);
         return (
-            <div>
-                <h1>
-                    {this.state.text}
-                </h1>
-                <h2>
-                    {this.state.list.map(item => {
-                      return <span>{item['key']}<br/></span>
-                    })}
-                </h2>
+            <div className={'search-box'}>
+                <form className={'search-form'}>
+                    <input className="form-control" placeholder='ex: Ruby, Rails, Java, CSS, Javascript, Node, C#, SQL, etc.' ref="query" type="text" onChange={ (e) => this.updateSearch() }/>
+                </form>
+                <ul>
+                    { suggestion }
+                </ul>
             </div>
         );
     }
 }
 
-ReactDOM.render(<Hello context={window.props} />, document.getElementById('container'));
-*/
+ReactDOM.render(<SearchBar context={window.props} />, document.getElementById('search-bar'));

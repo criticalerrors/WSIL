@@ -8,3 +8,4 @@ django-jsonify
 scrapy
 scrapy-djangoitem
 djangorestframework
+django-cors-headers
