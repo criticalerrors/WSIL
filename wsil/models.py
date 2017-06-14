@@ -32,7 +32,7 @@ class LibraryOrFramework(models.Model):
     language = models.ManyToManyField(Language, null=True)
     license = models.CharField(max_length=10, null=True)
     website = models.URLField(null=True)
-    description = models.CharField(null=True)
+    description = models.CharField(null=True, max_length=300)
 
 
 class Features(models.Model):

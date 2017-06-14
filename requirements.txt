@@ -6,3 +6,4 @@ whitenoise==3.2
 django-webpack-loader
 django-jsonify
 scrapy
+scrapy-djangoitem
