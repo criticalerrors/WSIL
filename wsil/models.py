@@ -11,3 +11,8 @@ class RepositoryUsingIt(models.Model):
     def create(cls, language_name, language_count):
         rui = cls(language=language_name, repository_count=language_count)
         return rui
+
+
+class QuestionOnIt(models.Model):
+    tag = models.CharField(unique=True, max_length=30)
+    count = models.IntegerField()

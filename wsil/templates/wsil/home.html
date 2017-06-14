@@ -27,8 +27,12 @@
             <div class="img-rounded"style="background-color: honeydew;opacity:0.2;text-align:center">
                 <ul style="list-style-type: none">
         <h3 style="color:black">Top10 LANGUAGE</h3>
-                {% for i in "xxxxxxxxxx" %}
-                    <h5><li>{{ forloop.counter0 }}</li></h5>
+                {% for language in top10  %}
+                    <h5>
+                       <a href="{{ language.language | lower }}">
+                           <li><span>{{ forloop.counter }} -</span> {{ language.language }}</li>
+                       </a>
+                    </h5>
                 {% endfor %}
                 </ul>
             </div>
