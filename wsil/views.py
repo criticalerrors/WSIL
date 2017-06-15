@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from .models import RepositoryUsingIt, Suggestion
+from .models import RepositoryUsingIt, Language
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import generics
@@ -36,7 +36,7 @@ class SuggestedView(generics.ListAPIView):
     serializer_class = SuggestionSerializer
 
     def get_queryset(self):
-        return Suggestion.objects.filter(keyword=self.kwargs['kw'])
+        return Language.objects.filter(name__contains=self.kwargs['kw']).order_by('name')[:10]
 
 
 def handler404(request):

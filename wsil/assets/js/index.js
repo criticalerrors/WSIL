@@ -18,7 +18,10 @@ class SearchBar extends React.Component {
     }
 
     search( query = '' ) {
-
+        if (query == '') {
+            this.setState({suggested: []});
+            return;
+        }
         let url = "http://" + window.location.hostname + ":8000/api/suggest/"+ query + "?format=json"; //TODO
         console.log(url);
         fetch(url)
@@ -36,7 +39,7 @@ class SearchBar extends React.Component {
 
     render() {
         let suggestion = this.state.suggested.map(function(sugg){
-            return <h5><li className="list-link"><a href={sugg.suggested_keyword}>{sugg.suggested_keyword}</a></li></h5>;
+            return <h5><li className="list-link"><a href={sugg.name}>{sugg.name}</a></li></h5>;
         });
         console.log(suggestion);
         return (
