@@ -24,19 +24,22 @@
         </div>
     </div>
     <div class="row">
-
         <div class="col-md-2">
             <div class="img-rounded page" >
                 <ul class="top-lang-list">
                     <h3 style="color:black">Top 10 {{ l_title }} frameworks</h3>
                     <br/>
-                    {% for language in top10  %}
+                {% if not top10fwl %}
+                    <h4>No framework available</h4>
+                {% else %}
+                    {% for fwl in top10fwl  %}
                         <h5>
-                            <a href="http://{{ request.get_host }}/details/{{ language.language | lower }}">
-                                <li class="list-link"><span>{{ forloop.counter }} -</span> {{ language.language }}</li>
+                            <a href="http://{{ request.get_host }}/details/{{ fwl.name | lower }}">
+                                <li class="list-link"><span>{{ forloop.counter }} -</span> {{ fwl.name }}</li>
                             </a>
                         </h5>
                     {% endfor %}
+                {% endif %}
                 </ul>
             </div>
         </div>
@@ -45,7 +48,7 @@
         <div class="col-md-8">
 
             <div class="page">
-                <h4>Repository count per language</h4>
+                <h4>Interest over time for {{ l_title | upper }}</h4>
                 <div id="interestTimeScatter"></div>
             </div>
         </div>
@@ -54,6 +57,12 @@
 
             <div class="page">
                 <h4>Jobs</h4>
+                <br />
+                {% if not jobs %}
+                    <h5>No jobs available for {{ l_title }}</h5>
+                {% else %}
+
+                {% endif %}
             </div>
         </div>
 

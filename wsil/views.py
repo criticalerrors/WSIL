@@ -37,7 +37,8 @@ class LanguageDetail(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(LanguageDetail, self).get_context_data(**kwargs)
         context['l_title'] = Language.objects.get(name__iexact=kwargs['lng']).name
-        print(context['l_title'])
+        context['top10fwl'] = [] # TODO
+        context['job'] = [] # TODO
         return context
 
 
