@@ -1,6 +1,6 @@
 import scrapy
-from wikiscraper.wikiscraper.items import FeaturesItem, LibraryOrFrameworkItem
 
+from wikiscraper.items import FeaturesItem, LibraryOrFrameworkItem
 
 class LibraryOrFrameworkSpider(scrapy.Spider):
     name = "library_or_framework"

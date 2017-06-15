@@ -13,10 +13,11 @@ import django
 import os
 import sys
 
-## TODO absolute path to django https://github.com/scrapy-plugins/scrapy-djangoitem
-## os.environ['DJANGO_SETTINGS_MODULE'] = 'wsil.settings'
+## Absolute path to django settings
+sys.path.append(os.path.abspath('..'))
+os.environ['DJANGO_SETTINGS_MODULE'] = 'mainapp.settings'
 
-## django.setup()
+django.setup()
 
 SPIDER_MODULES = ['wikiscraper.spiders']
 NEWSPIDER_MODULE = 'wikiscraper.spiders'

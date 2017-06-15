@@ -5,8 +5,10 @@ psycopg2==2.6.2
 whitenoise==3.2
 django-webpack-loader
 django-jsonify
+lxml==3.7.3
 scrapy
 scrapy-djangoitem
 djangorestframework
 django-cors-headers
 pytrends
+pypiwin32
