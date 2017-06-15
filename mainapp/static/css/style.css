@@ -5,6 +5,10 @@
     color: black;
 }
 
+.list-link:hover {
+    color: black;
+}
+
 .search-box {
   display: inline-block;
   width: 100%;

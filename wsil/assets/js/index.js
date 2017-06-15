@@ -39,7 +39,8 @@ class SearchBar extends React.Component {
 
     render() {
         let suggestion = this.state.suggested.map(function(sugg){
-            return <h5><li className="list-link"><a href={sugg.name}>{sugg.name}</a></li></h5>;
+            let url = "http://" + window.location.hostname + ":8000/lang/"+ sugg.name.toLowerCase() ;
+            return <h5><li className="list-link"><a href={url}>{sugg.name}</a></li></h5>;
         });
         console.log(suggestion);
         return (

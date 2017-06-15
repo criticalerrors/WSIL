@@ -12,6 +12,7 @@
         window.props = {{ props | jsonify }};
         window.props.django_url = {{ HTTP_HOST }};
     </script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 {% endblock %}
 {% block container %}
     <div class="row">
@@ -28,9 +29,10 @@
             <div class="img-rounded page" >
                 <ul class="top-lang-list">
                     <h3 style="color:black">Top10 LANGUAGE</h3>
+                <br/>
                     {% for language in top10  %}
                         <h5>
-                            <a href="{{ language.language | lower }}">
+                            <a href="http://{{ request.get_host }}/details/{{ language.language | lower }}">
                                 <li class="list-link"><span>{{ forloop.counter }} -</span> {{ language.language }}</li>
                             </a>
                         </h5>
@@ -38,7 +40,17 @@
                 </ul>
             </div>
         </div>
+
+
         <div class="col-md-8">
+
+            <div class="page">
+                <h4>Repository count per language</h4>
+               <div id="barPlot"></div>
+            </div>
+        </div>
+
+     <div class="col-md-2">
 
             <div class="page">
                 <div id="search-bar">
@@ -48,17 +60,6 @@
             </div>
         </div>
 
-        <div class="col-md-2">
-
-            <div class="page">
-                <h1>INSERISCI Le cose dentro</h1>
-                <h1>INSERISCI Le cose dentro</h1>
-                <h1>INSERISCI Le cose dentro</h1>
-
-            </div>
-
-        </div>
-
 
     </div>
 
@@ -66,3 +67,8 @@
 
 {% endblock %}
 
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/bar-plot.js' %}">
+    </script>
+{% endblock %}

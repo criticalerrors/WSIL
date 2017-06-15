@@ -5,7 +5,7 @@ from .models import RepositoryUsingIt, Language
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import generics
-from wsil.serializer import SuggestionSerializer
+from wsil.serializer import SuggestionSerializer, Top10Serializer
 
 
 # Create your views here.
@@ -37,6 +37,13 @@ class SuggestedView(generics.ListAPIView):
 
     def get_queryset(self):
         return Language.objects.filter(name__contains=self.kwargs['kw']).order_by('name')[:10]
+
+
+class Top10ForCharts(generics.ListAPIView):
+    serializer_class = Top10Serializer
+
+    def get_queryset(self):
+        return RepositoryUsingIt.objects.all().order_by('-repository_count')[:10]
 
 
 def handler404(request):
