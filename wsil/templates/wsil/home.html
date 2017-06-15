@@ -10,7 +10,7 @@
     {{ block.super }}
     <script>
         window.props = {{ props | jsonify }};
-        window.props.django_url = {{ url }};
+        window.props.django_url = {{ HTTP_HOST }};
     </script>
 {% endblock %}
 {% block container %}

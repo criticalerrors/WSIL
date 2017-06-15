@@ -19,10 +19,7 @@ class SearchBar extends React.Component {
 
     search( query = '' ) {
 
-        let url = "http://localhost:8000/api/suggest/"+ query + "?format=json"; //TODO
-        if (url.endsWith('/')) {
-            url = url.substr(0, url.length);
-        }
+        let url = "http://" + window.location.hostname + ":8000/api/suggest/"+ query + "?format=json"; //TODO
         console.log(url);
         fetch(url)
             .then(function(data) {
