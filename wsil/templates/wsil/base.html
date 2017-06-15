@@ -31,19 +31,16 @@
 
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
 						 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-					</button> <a class="navbar-brand" href="" style="color:white;"><h2>WSIL</h2></a>
+					</button> <a class="navbar-brand" href="{% url 'main_home' %}" style="color:white;"><h2>WSIL</h2></a>
 				</div>
 
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav navbar-right">
 						<li class="active">
-							<a href="">HOME</a>
+							<a href="{% url 'main_home' %}">HOME</a>
 						</li>
 						<li>
-							<a href="http://">ABOUT</a>
-						</li>
-						<li>
-							<a href="#">CONTACT</a>
+							<a href="{% url 'about_page' %}">ABOUT</a>
 						</li>
 					</ul>
 

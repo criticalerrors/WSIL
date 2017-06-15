@@ -4,7 +4,7 @@
 {% load static %}
 {% load jsonify %}
 {% block title %}
-    {{ APP_NAME }}
+    {{ l_title }}
 {% endblock %}
 {% block head %}
     {{ block.super }}
@@ -28,8 +28,8 @@
         <div class="col-md-2">
             <div class="img-rounded page" >
                 <ul class="top-lang-list">
-                    <h3 style="color:black">Top10 LANGUAGE</h3>
-                <br/>
+                    <h3 style="color:black">Top 10 {{ l_title }} frameworks</h3>
+                    <br/>
                     {% for language in top10  %}
                         <h5>
                             <a href="http://{{ request.get_host }}/details/{{ language.language | lower }}">
@@ -46,17 +46,14 @@
 
             <div class="page">
                 <h4>Repository count per language</h4>
-               <div id="barPlot"></div>
+                <div id="interestTimeScatter"></div>
             </div>
         </div>
 
-     <div class="col-md-2">
+        <div class="col-md-2">
 
             <div class="page">
-                <div id="search-bar">
-
-                </div>
-                {% render_bundle 'main'%}
+                <h4>Jobs</h4>
             </div>
         </div>
 
@@ -69,6 +66,9 @@
 
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static 'js/bar-plot-overall.js' %}">
+    <script src="{% static 'js/plot-lang.js' %}">
+    </script>
+    <script>
+        getPlot('{{ l_title }}', 'interestTimeScatter', 'scatter');
     </script>
 {% endblock %}
