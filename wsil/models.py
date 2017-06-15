@@ -54,29 +54,30 @@ class Features(models.Model):
 """InterestOverTimeLanguage(?language_name, ?date, ?interest_rate)"""
 
 class InterestOverTimeLanguage(models.Model):
-    language_name = models.CharField(unique= True, max_length=30)
-    date = models.CharField(max_length=20, null=True)
-    interest_rate = models.CharField(max_length=10, null=True)
+    language_name = models.CharField(max_length=30)
+    date = models.DateTimeField(null=True)
+    interest_rate = models.IntegerField(null=True)
 
 
 
 """InterestOverTimeFrameworkLibrary(?fw_or_lib, ?date, ?interest_rate)"""
 class InterestOverTimeFrameworkLibrary(models.Model):
-    fw_or_lib = models.CharField(unique=True, max_length=30)
-    date = models.CharField(max_length=20, null=True)
-    interest_rate = models.CharField(max_length=10, null=True)
+    fw_or_lib = models.CharField(max_length=30)
+    date = models.DateTimeField(null=True)
+    interest_rate = models.IntegerField(null=True)
 
 """ InterestByRegionLanguage(?language, ?region, ?interest_rate)"""
 class InterestByRegionLanguage(models.Model):
-    language = models.CharField(unique=True, max_length=30)
+    language = models.CharField(max_length=30)
     region = models.CharField(max_length=30, null=True)
-    interest_rate = models.CharField(max_length=10, null=True)
+    interest_rate = models.IntegerField(null=True)
 
 """InterestByRegionFrameworkLibrary(?fw_or_lib, ?region, ?interest_rate)"""
 class InterestByRegionFrameworkLibrary(models.Model):
-    fw_or_lib = models.CharField(unique=True, max_length=30)
-    date = models.CharField(max_length=20, null=True)
-    interest_rate = models.CharField(max_length=10, null=True)
+    fw_or_lib = models.CharField(max_length=30)
+    region = models.CharField(max_length=30, null=True)
+    interest_rate = models.IntegerField(null=True)
+
 """Course(?course_id, ?slug, ?course_type, ?course_name, ?logo, ?photo_url,
 ?description, ?workload, ?url)"""
 class Course(models.Model):
