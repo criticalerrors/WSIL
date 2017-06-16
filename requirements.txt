@@ -11,4 +11,3 @@ scrapy-djangoitem
 djangorestframework
 django-cors-headers
 pytrends
-pypiwin32
