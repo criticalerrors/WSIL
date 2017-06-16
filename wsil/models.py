@@ -1,7 +1,14 @@
 from django.db import models
+from django.utils import timezone
+import datetime
+import requests
+import threading
+
+
+def tomorrow():
+    return timezone.now() + datetime.timedelta(days=1)
 
 # Create your models here.
-
 
 class RepositoryUsingIt(models.Model):
     language = models.CharField(unique=True, max_length=30)
@@ -16,7 +23,39 @@ class RepositoryUsingIt(models.Model):
 class QuestionOnIt(models.Model):
     tag = models.CharField(unique=True, max_length=30)
     count = models.IntegerField()
-    cache_date = models.DateTimeField()
+    cache_date = models.DateTimeField(null=True, default=tomorrow)
+
+    @classmethod
+    def get_count_for_lang(cls, lang):
+        in_db = cls.objects.filter(tag__iexact=lang)
+        t = None
+        if len(in_db) == 1:
+            in_db = in_db[0]
+            if in_db.cache_date > timezone.now():
+                print("Cached!")
+                return in_db
+            else:
+                t = threading.Thread(target=clear_cache, args=(QuestionOnIt,))
+                t.start()
+        url = "https://api.stackexchange.com/2.2/tags?order=desc&sort=popular&inname="+lang+"&site=stackoverflow"
+        json = {}
+        try:
+            r = requests.get(url)
+            json = r.json()['items']
+        except ConnectionError as ex:
+            print(ex)
+        except Exception as ex:
+            print(ex)
+        for tag in json:
+            if lang.lower() == tag['name'].lower():
+                try:
+                    tc = cls(tag=tag['name'], count=tag['count'])
+                    if t:
+                        t.join()
+                    tc.save()
+                    return tc
+                except Exception as ex:
+                    print(ex)
 
 
 class Language(models.Model):
@@ -96,7 +135,7 @@ class Course(models.Model):
     description = models.CharField(max_length=150, null=True)
     workload = models.CharField(max_length=100, null=True)
     url = models.URLField(null=True)
-    cache_date = models.DateTimeField()
+    cache_date = models.DateTimeField(null=True, default=tomorrow)
 
 
 class CoursePartner(models.Model):
@@ -104,7 +143,7 @@ class CoursePartner(models.Model):
     course_id = models.ManyToManyField(Course, null=True)
     partner_name = models.CharField(max_length=30, null=True)
     partner_image = models.URLField(null=True)
-    cache_date = models.DateTimeField()
+    cache_date = models.DateTimeField(null=True, default=tomorrow)
 
 
 class Job(models.Model):
@@ -116,9 +155,14 @@ class Job(models.Model):
     location_name = models.CharField(max_length=30, null=True)
     lat = models.CharField(max_length=30, null=True)
     query = models.CharField(max_length=30, null=True)
-    cache_date = models.DateTimeField()
+    cache_date = models.DateTimeField(null=True, default=tomorrow)
 
     @classmethod
     def get_all_job_for(cls, keyword):
         url = "http://api.indeed.com/ads/apisearch?publisher=6284576268691023&v=2&format=json&q=" + keyword
         Job.objects.filter(query__contains=keyword)
+
+
+def clear_cache(model):
+    print("Lazy delete")
+    model.objects.filter(cache_date__lt=timezone.now()).delete()

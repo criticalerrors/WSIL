@@ -29,28 +29,31 @@
                 <ul class="top-lang-list">
                     <h3 style="color:black">Top 10 {{ l_title }} frameworks</h3>
                     <br/>
-                {% if not top10fwl %}
-                    <h4>No framework available</h4>
-                {% else %}
-                    {% for fwl in top10fwl  %}
-                        <h5>
-                            <a href="http://{{ request.get_host }}/details/{{ fwl.name | lower }}">
-                                <li class="list-link"><span>{{ forloop.counter }} -</span> {{ fwl.name }}</li>
-                            </a>
-                        </h5>
-                    {% endfor %}
-                {% endif %}
+                    {% if not top10fwl %}
+                        <h4>No framework available</h4>
+                    {% else %}
+                        {% for fwl in top10fwl  %}
+                            <h5>
+                                <a href="http://{{ request.get_host }}/details/{{ fwl.name | lower }}">
+                                    <li class="list-link"><span>{{ forloop.counter }} -</span> {{ fwl.name }}</li>
+                                </a>
+                            </h5>
+                        {% endfor %}
+                    {% endif %}
                 </ul>
             </div>
         </div>
 
 
-        <div class="col-md-8">
+        <div class="col-md-8 page">
 
-            <div class="page">
-                <h4>Interest over time for {{ l_title | upper }}</h4>
-                <div id="interestTimeScatter"></div>
-            </div>
+                <div class="col-md-6">
+                    <h4>Interest over time for {{ l_title | upper }}</h4>
+                    <div id="interestTimeScatter"></div>
+                </div>
+                <div class="col-md-6">
+                    Question on it: {{ question_count }}
+                </div>
         </div>
 
         <div class="col-md-2">

@@ -2,7 +2,8 @@ from django.views.generic import TemplateView, DeleteView
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.db.models import Avg
-from .models import RepositoryUsingIt, Language, InterestOverTimeFrameworkLibrary, LibraryOrFramework, InterestOverTimeLanguage
+from .models import RepositoryUsingIt, Language, InterestOverTimeFrameworkLibrary, LibraryOrFramework
+from .models import InterestOverTimeLanguage, QuestionOnIt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import generics
@@ -36,9 +37,11 @@ class LanguageDetail(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(LanguageDetail, self).get_context_data(**kwargs)
-        context['l_title'] = Language.objects.get(name__iexact=kwargs['lng']).name
+        query = kwargs['lng']
+        context['l_title'] = Language.objects.get(name__iexact=query).name
         context['top10fwl'] = [] # TODO
         context['job'] = [] # TODO
+        context['question_count'] = QuestionOnIt.get_count_for_lang(query).count
         return context
 
 
