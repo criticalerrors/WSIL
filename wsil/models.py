@@ -181,11 +181,25 @@ class Course(models.Model):
 
 
 class CoursePartner(models.Model):
-    partner_id = models.CharField(max_length=30, unique= True)
-    course_id = models.ManyToManyField(Course, null=True)
+    partner_id = models.CharField(max_length=30, unique=True)
+    course_id = models.CharField(max_length=30, null=True)
     partner_name = models.CharField(max_length=30, null=True)
-    partner_image = models.URLField(null=True)
-    cache_date = models.DateTimeField(null=True, default=tomorrow)
+    partner_shortname = models.CharField(null=True, max_length=5)
+
+    @classmethod
+    def get_course_partner(cls, course_id):
+        partner = cls.objects.filter(course_id=course_id)
+        if partner.count() != 0:
+            return partner
+        url = "https://api.coursera.org/api/courses.v1/"+ course_id +"?includes=partnerIds"
+        json = get_url_req(url)
+        if 'linked' in json and 'partners.v1' in json['linked']:
+            for partner in json['linked']['partners.v1']:
+                print(partner)
+                c = Course.objects.filter(pk=course_id)
+                p = cls(partner_id=str(partner['id']), partner_name=partner['name'], partner_shortname=partner['shortName'], course_id=c)
+                p.save()
+                return p
 
 
 class Job(models.Model):
