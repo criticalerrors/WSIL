@@ -1,9 +1,9 @@
-from django.views.generic import TemplateView, DeleteView
+from django.views.generic import TemplateView, DetailView
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.db.models import Avg
 from .models import RepositoryUsingIt, Language, InterestOverTimeFrameworkLibrary, LibraryOrFramework
-from .models import InterestOverTimeLanguage, QuestionOnIt
+from .models import InterestOverTimeLanguage, QuestionOnIt, Job
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import generics
@@ -37,15 +37,22 @@ class LanguageDetail(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(LanguageDetail, self).get_context_data(**kwargs)
-        query = kwargs['lng']
-        context['l_title'] = Language.objects.get(name__iexact=query).name
+        id = kwargs['lng']
+        context['l_title'] = RepositoryUsingIt.objects.get(pk=id).language
         context['top10fwl'] = [] # TODO
-        context['job'] = [] # TODO
+        query = context['l_title']
+        context['jobs_count'] = Job.get_all_job_for(query).count()
+        context['jobs'] = Job.get_all_job_for(query)
         context['question_count'] = QuestionOnIt.get_count_for_lang(query).count
         return context
 
 
-#### REST
+class JobDetail(DetailView):
+    model = Job
+    template_name = "wsil/job.html" # TODO
+
+
+# REST
 
 class SuggestedView(generics.ListAPIView):
     serializer_class = SuggestionSerializer

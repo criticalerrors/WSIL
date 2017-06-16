@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from xml.etree import ElementTree
 import datetime
 import requests
 import threading
@@ -38,14 +39,7 @@ class QuestionOnIt(models.Model):
                 t = threading.Thread(target=clear_cache, args=(QuestionOnIt,))
                 t.start()
         url = "https://api.stackexchange.com/2.2/tags?order=desc&sort=popular&inname="+lang+"&site=stackoverflow"
-        json = {}
-        try:
-            r = requests.get(url)
-            json = r.json()['items']
-        except ConnectionError as ex:
-            print(ex)
-        except Exception as ex:
-            print(ex)
+        json = get_url_req(url)['items']
         for tag in json:
             if lang.lower() == tag['name'].lower():
                 try:
@@ -67,6 +61,7 @@ class LibraryOrFramework(models.Model):
     type = models.CharField(max_length=30, null=True)
     initial_release = models.CharField(max_length=100, null=True)
     stable_release = models.CharField(max_length=100, null=True)
+    release_date = models.CharField(max_length=50,null= True)
     repository = models.URLField(null=True)
     development_status = models.CharField(max_length=10, null=True)
     language = models.ManyToManyField(Language, null=True)
@@ -137,6 +132,17 @@ class Course(models.Model):
     url = models.URLField(null=True)
     cache_date = models.DateTimeField(null=True, default=tomorrow)
 
+    @classmethod
+    def get_courses_for_lang(cls, lang):
+        t = None
+        in_db = cls.objects.filter(description__contains=lang).filter(cache_date__gt=timezone.now())
+        if len(in_db) != 0:
+            return in_db
+        t = threading.Thread(target=clear_cache, args=(Course,))
+        t.start()
+
+
+
 
 class CoursePartner(models.Model):
     partner_id = models.CharField(max_length=30, unique= True)
@@ -147,22 +153,104 @@ class CoursePartner(models.Model):
 
 
 class Job(models.Model):
-    job_title = models.CharField(max_length=30, unique=True)
+    job_title = models.CharField(max_length=30)
     description = models.CharField(max_length=150, null=True)
     post_date = models.CharField(max_length=10, null=True)
     company_name = models.CharField(max_length=30, null=True)
     company_url = models.URLField(null=True)
     location_name = models.CharField(max_length=30, null=True)
-    lat = models.CharField(max_length=30, null=True)
+    lang = models.CharField(max_length=3, null=True)
     query = models.CharField(max_length=30, null=True)
     cache_date = models.DateTimeField(null=True, default=tomorrow)
 
     @classmethod
-    def get_all_job_for(cls, keyword):
-        url = "http://api.indeed.com/ads/apisearch?publisher=6284576268691023&v=2&format=json&q=" + keyword
-        Job.objects.filter(query__contains=keyword)
+    def get_all_job_for(cls, lang):
+        t = None
+        in_db = cls.objects.filter(description__contains=lang).filter(cache_date__gt=timezone.now())
+        if len(in_db) != 0:
+            return in_db
+        t = threading.Thread(target=clear_cache, args=(Job,))
+        t.start()
+        # INDEED
+        url = "http://api.indeed.com/ads/apisearch?publisher=6284576268691023&q=" + lang + "&v=2"
+        jobs = get_url_xml(url, 'results/result')
+        jobs_list = []
+        for job in jobs:
+            try:
+                j = Job(job_title=job['jobtitle'], description=job['snippet'], post_date=job['date'],
+                        company_name=job['company'], company_url=job['url'], location_name=job['city'],
+                        lang=job['language'], query=lang)
+                jobs_list.append(j)
+            except Exception as ex:
+                print("Missing values")
+                continue
+        # AUTH JOBS
+        url = "https://authenticjobs.com/api/?api_key=6ee025bd66be61be4bb601e8dd75707c&method=aj.jobs.search&keywords=" + lang
+        jobs = get_url_xml_auth_jobs(url)
+        for job in jobs:
+            try:
+                j = Job(job_title=job['title'], description=job['description'], post_date=job['post_date'],
+                        company_name=job['company'], company_url=job['url'], location_name=job['city'],
+                        lang=job['language'], query=lang)
+                jobs_list.append(j)
+            except Exception as ex:
+                print("Missing values")
+                continue
+        t.join()
+        Job.objects.bulk_create(jobs_list)
+
 
 
 def clear_cache(model):
     print("Lazy delete")
     model.objects.filter(cache_date__lt=timezone.now()).delete()
+
+
+def get_url_req(url):
+    try:
+        r = requests.get(url)
+        json = r.json()
+        return json
+    except ConnectionError as ex:
+        print(ex)
+    except Exception as ex:
+        print(ex)
+
+
+def get_url_xml(url, query):
+    r = requests.get(url)
+    tree = ElementTree.fromstring(r.content)
+    el_list = []
+    for els in tree.findall(query):
+        el_dic = {}
+        for el in els:
+            el_dic[el.tag] = el.text
+        el_list.append(el_dic)
+    return el_list
+
+
+def get_url_xml_auth_jobs(url):
+    r = requests.get(url)
+    tree = ElementTree.fromstring(r.content)
+    el_list = []
+    for els in tree.findall('listings/listing'):
+        el_dic = {}
+        try:
+            el_dic['title'] = els.attrib['title']
+            el_dic['description'] = els.attrib['description']
+            el_dic['post_date'] = els.attrib['post_date']
+
+            company = els.find('company')
+            el_dic['company'] = company.attrib['name']
+            el_dic['url'] = company.attrib['url']
+
+            location_child = els.find('company/location')
+            el_dic['city'] = location_child.attrib['name']
+            el_dic['language'] = location_child.attrib['country'] if 'country' in location_child.attrib else '-'
+
+            el_list.append(el_dic)
+        except AttributeError as ex:
+            print("Missing value")
+            continue
+    return el_list
+

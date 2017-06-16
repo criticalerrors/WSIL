@@ -45,26 +45,48 @@
         </div>
 
 
-        <div class="col-md-8 page">
+        <div class="col-md-7 page">
 
-                <div class="col-md-6">
-                    <h4>Interest over time for {{ l_title | upper }}</h4>
-                    <div id="interestTimeScatter"></div>
-                </div>
-                <div class="col-md-6">
-                    Question on it: {{ question_count }}
-                </div>
+            <div class="col-md-6">
+                <h4>Interest over time for {{ l_title | upper }}</h4>
+                <div id="interestTimeScatter"></div>
+            </div>
+            <div class="col-md-6">
+                {% include 'wsil/highlights-rows.html' with description="Question on it" value=question_count %}
+                {% include 'wsil/highlights-rows.html' with description="Jobs for it" value=jobs_count %}
+            </div>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-3">
 
             <div class="page">
                 <h4>Jobs</h4>
                 <br />
-                {% if not jobs %}
+                {% if jobs_count == "0" %}
                     <h5>No jobs available for {{ l_title }}</h5>
                 {% else %}
+                    <h5>Found {{ jobs_count }} jobs:</h5>
+                    {% for job in jobs %}
+                        <div class="row">
+                            <h6>
+                                <a href="{% url 'job_detail' job.id %}">
+                                    {{ job.job_title }}
+                                </a>
+                            </h6>
+                            <div>
+                                {{ job.description | truncatechars:150}}
+                                <div class="row">
+                                    <div class="col-sm-4">Date:</div>
+                                    <div class="col-sm-8">{{ job.post_date }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">Company:</div>
+                                    <div class="col-sm-8">{{ job.company_name }}</div>
+                                </div>
 
+                            </div>
+                        </div>
+                    {% endfor %}
                 {% endif %}
             </div>
         </div>

@@ -32,7 +32,7 @@
                 <br/>
                     {% for language in top10  %}
                         <h5>
-                            <a href="http://{{ request.get_host }}/details/{{ language.language | lower }}">
+                            <a href="{% url 'detail_lang' language.id %}">
                                 <li class="list-link"><span>{{ forloop.counter }} -</span> {{ language.language }}</li>
                             </a>
                         </h5>
