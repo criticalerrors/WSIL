@@ -76,7 +76,7 @@ ITEM_PIPELINES = {
     'wikiscraper.pipelines.WikiscraperPipeline': 300,
 }
 
-DOWNLOAD_DELAY = 1    # 1 s of delay
+DOWNLOAD_DELAY = 0.5   # 500 ms of delay
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
