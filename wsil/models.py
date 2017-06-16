@@ -16,6 +16,7 @@ class RepositoryUsingIt(models.Model):
 class QuestionOnIt(models.Model):
     tag = models.CharField(unique=True, max_length=30)
     count = models.IntegerField()
+    cache_date = models.DateTimeField()
 
 
 class Language(models.Model):
@@ -95,6 +96,7 @@ class Course(models.Model):
     description = models.CharField(max_length=150, null=True)
     workload = models.CharField(max_length=100, null=True)
     url = models.URLField(null=True)
+    cache_date = models.DateTimeField()
 
 
 class CoursePartner(models.Model):
@@ -102,6 +104,7 @@ class CoursePartner(models.Model):
     course_id = models.ManyToManyField(Course, null=True)
     partner_name = models.CharField(max_length=30, null=True)
     partner_image = models.URLField(null=True)
+    cache_date = models.DateTimeField()
 
 
 class Job(models.Model):
@@ -113,6 +116,7 @@ class Job(models.Model):
     location_name = models.CharField(max_length=30, null=True)
     lat = models.CharField(max_length=30, null=True)
     query = models.CharField(max_length=30, null=True)
+    cache_date = models.DateTimeField()
 
     @classmethod
     def get_all_job_for(cls, keyword):
