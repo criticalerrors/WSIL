@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.db.models import Avg
 from .models import RepositoryUsingIt, Language, InterestOverTimeFrameworkLibrary, LibraryOrFramework
-from .models import InterestOverTimeLanguage, QuestionOnIt, Job
+from .models import InterestOverTimeLanguage, QuestionOnIt, Job, Course
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import generics
@@ -44,6 +44,7 @@ class LanguageDetail(TemplateView):
         context['jobs_count'] = Job.get_all_job_for(query).count()
         context['jobs'] = Job.get_all_job_for(query)
         context['question_count'] = QuestionOnIt.get_count_for_lang(query).count
+        context['courses'] = Course.get_courses_for_lang(query)
         return context
 
 

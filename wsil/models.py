@@ -122,15 +122,16 @@ class InterestByRegionFrameworkLibrary(models.Model):
 
 
 class Course(models.Model):
-    course_id = models.CharField(unique=True, max_length=30)
-    slug =  models.CharField(max_length=30, null=True)
-    course_type =  models.CharField(max_length=30, null=True)
+    course_id = models.CharField(max_length=30, primary_key=True)
+    slug = models.CharField(max_length=30, null=True)
+    course_type = models.CharField(max_length=30, null=True)
     logo = models.URLField(null=True)
     photo_url = models.URLField(null=True)
     description = models.CharField(max_length=150, null=True)
     workload = models.CharField(max_length=100, null=True)
     url = models.URLField(null=True)
     cache_date = models.DateTimeField(null=True, default=tomorrow)
+    source = models.CharField(null=False, max_length=10, default="COURSERA")
 
     @classmethod
     def get_courses_for_lang(cls, lang):
@@ -140,8 +141,43 @@ class Course(models.Model):
             return in_db
         t = threading.Thread(target=clear_cache, args=(Course,))
         t.start()
+        courses = []
+        # COURSERA
+        url = "https://api.coursera.org/api/courses.v1?q=search&query="+lang+"&fields=partnerLogo,photoUrl,description,workload,previewLink"
+        json = get_url_req(url)
+        for course in json['elements']:
+            try:
+                c = cls(course_id=course['id'], slug=course['slug'], course_type=course['courseType'], logo=course['partnerLogo'],
+                        photo_url=course['photoUrl'], description=course['description'], workload=course['workload'],
+                        url='https://www.coursera.org/', source="COURSERA")
+                courses.append(c)
+            except Exception as ex:
+                print("Missing data in Coursera")
+                print(ex)
+        # UDACITY
+        if cls.objects.filter(source="UDACITY").count() != 0:
+            t.join()
+            cls.objects.bulk_create(courses)
+            return cls.objects.filter(description__contains=lang).filter(cache_date__gt=timezone.now())
 
-
+        url = "https://www.udacity.com/public-api/v1/courses"
+        json = get_url_req(url)
+        for course in json['courses']:
+            if not course['available']:
+                continue
+            try:
+                c = cls(course_id=course['key'], slug=course['slug'], course_type=course['level'], logo=course['banner_image'],
+                        photo_url=course['image'], description=course['summary'],
+                        workload=str(course['expected_duration']) + " " + course['expected_duration_unit'],
+                        url='https://www.udacity.com', source="UDACITY")
+                courses.append(c)
+            except Exception as ex:
+                print("Missing data in Udacity")
+                print(ex)
+        t.join()
+        print(courses)
+        cls.objects.bulk_create(courses)
+        return courses
 
 
 class CoursePartner(models.Model):
@@ -198,7 +234,7 @@ class Job(models.Model):
                 continue
         t.join()
         Job.objects.bulk_create(jobs_list)
-
+        return jobs_list
 
 
 def clear_cache(model):
