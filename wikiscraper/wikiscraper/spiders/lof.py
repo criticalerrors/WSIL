@@ -10,6 +10,7 @@ class LibraryOrFrameworkSpider(scrapy.Spider):
         'https://en.wikipedia.org/wiki/Comparison_of_web_frameworks'
     ]
 
+
     def parse(self, response):
         last_request = None
         #language = elem.xpath('//*[@id="mw-content-text"]/div/h3[position()<15]/span/text()').extract()
@@ -23,9 +24,11 @@ class LibraryOrFrameworkSpider(scrapy.Spider):
             if acronym: # There may be an acronym next to the name
                 name += acronym
 
+            self.log("Next element: " + name)
             # Get version and release
             cells = list(elem.xpath('./td')) # In some table there is also a column named 'Language'
             # We start from the last column and we go backward
+            lic = cells[-1].xpath('./text() | ./a/text()').extract_first()
             stable_version = cells[-2].xpath('./text()').extract_first()
             release_date = cells[-3].xpath('./text()').extract_first()
 
@@ -39,8 +42,10 @@ class LibraryOrFrameworkSpider(scrapy.Spider):
                 request.meta['language'] = language
             request.meta['stable_version'] = stable_version
             request.meta['rel_date'] = release_date
+            request.meta['license'] = lic
 
             yield request
+
 
     def get_details(self, response):
         self.log('Starting the second parsing phase')
@@ -52,16 +57,25 @@ class LibraryOrFrameworkSpider(scrapy.Spider):
             loader.add_value('language', response.meta['language'])
         loader.add_value('stable_release', response.meta['stable_version'])
         # Waiting for the update of FrameworkOrLibrary model
-        loader.add_value('release_date', response.meta['release_date'])
-        loader.add_xpath('description', '//*[@id="mw-content-text"]/div/p[1]')
+        loader.add_value('release_date', response.meta['rel_date'])
+        loader.add_xpath('description', '//*[@id="mw-content-text"]/div/p[1] | //*[@id="mw-content-text"]/p[1]')
 
+        license_found = False
         for row in response\
-                    .xpath('//*[@id="mw-content-text"]/div/table[1]/tr[position() >= 3]'):
+                    .xpath('//*[@id="mw-content-text"]/div/table[position()<=3]/tr'):
             header = row.xpath('./th/a/text() | ./th/text()').extract_first()
             key, value = self.get_key_value(header, row)
             if key:
+                if key == 'license':
+                    license_found = True
                 loader.add_value(key, value)
+        # If it not found the license in the main page
+        # it will use the license found in the start page
+        if not license_found:
+            loader.add_value('license', response.meta['license'])
+
         return loader.load_item()
+
 
     @staticmethod
     def get_key_value(key, elem):
@@ -74,7 +88,7 @@ class LibraryOrFrameworkSpider(scrapy.Spider):
         elif key == 'Type':
             return ('type', elem.xpath('./td/a/text()').extract_first())
         elif key == 'License': #There may be a combination of link and plain text
-            value = elem.xpath('./td/a/text()').extract_first()
+            value = elem.xpath('./td/a/text() | ./td/text()').extract_first()
             plain_text = elem.xpath('./td/text()').extract_first()
             value = value + plain_text if plain_text else value
             return ('license', value)
