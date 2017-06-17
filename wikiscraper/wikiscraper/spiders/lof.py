@@ -4,6 +4,7 @@ import re
 from wikiscraper.items import FeaturesItem, LibraryOrFrameworkItem
 from scrapy.http import Request
 from scrapy.loader import ItemLoader
+from .utils import cleanhtml
 
 class LibraryOrFrameworkSpider(scrapy.Spider):
     name = "library_or_framework"
@@ -113,9 +114,3 @@ class LibraryOrFrameworkSpider(scrapy.Spider):
             return ('website', ','.join(urls))
         else:
             return (None, None)
-
-# Remove all the html tags in the string
-def cleanhtml(raw_html):
-    cleanr = re.compile('<.*?>')
-    cleantext = re.sub(cleanr, '', raw_html)
-    return cleantext
