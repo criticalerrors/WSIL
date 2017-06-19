@@ -30,7 +30,7 @@ class QuestionOnIt(models.Model):
     def get_count_for_lang(cls, lang):
         in_db = cls.objects.filter(tag__iexact=lang)
         t = None
-        if len(in_db) == 1:
+        if in_db.count() > 0:
             in_db = in_db[0]
             if in_db.cache_date > timezone.now():
                 print("Cached!")
@@ -38,12 +38,12 @@ class QuestionOnIt(models.Model):
             else:
                 t = threading.Thread(target=clear_cache, args=(QuestionOnIt,))
                 t.start()
-        url = "https://api.stackexchange.com/2.2/tags?order=desc&sort=popular&inname="+lang+"&site=stackoverflow"
+        url = "https://api.stackexchange.com/2.2/tags?order=desc&sort=popular&inname="+lang.lower()+"&site=stackoverflow"
         json = get_url_req(url)['items']
         for tag in json:
             if lang.lower() == tag['name'].lower():
                 try:
-                    tc = cls(tag=tag['name'], count=tag['count'])
+                    tc = cls(tag=lang, count=tag['count'] if 'count' in tag else 0)
                     if t:
                         t.join()
                     tc.save()

@@ -56,9 +56,9 @@ def start():
                     first_m = 1
                     first_d = 1
                     first_h = 0
-                save_into_db()
                 word = last_y + "-" + last_m + "-" + last_d + "-" + last_h
                 save_into_file(word)
+                save_into_db()
 
 
 def analyze_file(wfile):
