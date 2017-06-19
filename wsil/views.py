@@ -1,7 +1,5 @@
 from django.views.generic import TemplateView, DetailView
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.db.models import Avg
+from django.shortcuts import render_to_response, get_object_or_404
 from .models import RepositoryUsingIt, Language, InterestOverTimeFrameworkLibrary, LibraryOrFramework
 from .models import InterestOverTimeLanguage, QuestionOnIt, Job, Course
 from rest_framework.renderers import JSONRenderer
@@ -38,7 +36,8 @@ class LanguageDetail(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(LanguageDetail, self).get_context_data(**kwargs)
         id = kwargs['lng']
-        context['l_title'] = RepositoryUsingIt.objects.get(pk=id).language
+        self.language = get_object_or_404(RepositoryUsingIt, pk=id)
+        context['l_title'] = self.language.language
         context['top10fwl'] = [] # TODO
         query = context['l_title']
         context['jobs_count'] = Job.get_all_job_for(query).count()
@@ -77,6 +76,6 @@ class InterestOverTimeLang(generics.ListAPIView):
 
 
 def handler404(request):
-    response = render_to_response('wsil/404.html', {}, context_instance=RequestContext(request))
+    response = render_to_response('wsil/404.html', {})
     response.status_code = 404
     return response

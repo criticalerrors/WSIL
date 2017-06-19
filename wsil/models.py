@@ -50,6 +50,9 @@ class QuestionOnIt(models.Model):
                     return tc
                 except Exception as ex:
                     print(ex)
+        not_found = cls(tag=lang, count=0)
+        not_found.save()
+        return not_found
 
 
 class Language(models.Model):

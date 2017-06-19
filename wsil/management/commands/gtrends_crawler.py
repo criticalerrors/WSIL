@@ -34,16 +34,24 @@ def start():
     all_languages = [i.name for i in models.Language.objects.all()]
     languages_cnt = len(all_languages)
     for i in range(0, languages_cnt+1, 5):
-        print("Fetch for " + ", ".join(all_languages[i:i+4]))
-        treq.build_payload(kw_list=all_languages[i:i+4])
-        populate_iot(treq.interest_over_time())
-        populate_ior(treq.interest_by_region())
+        try:
+            print("Fetch for " + ", ".join(all_languages[i:i+4]))
+            treq.build_payload(kw_list=all_languages[i:i+4])
+            populate_iot(treq.interest_over_time())
+            populate_ior(treq.interest_by_region())
+        except Exception as ex:
+            print(ex)
+            continue
     if languages_cnt % 5 != 0:
-        slice_index = languages_cnt - int(languages_cnt / 5) * 5
-        print("Fetch for " + ", ".join(all_languages[-slice_index]))
-        treq.build_payload(kw_list=all_languages[-slice_index])
-        populate_iot(treq.interest_over_time())
-        populate_ior(treq.interest_by_region())
+        try:
+            slice_index = languages_cnt - int(languages_cnt / 5) * 5
+            print("Fetch for " + ", ".join(all_languages[-slice_index]))
+            treq.build_payload(kw_list=all_languages[-slice_index])
+            populate_iot(treq.interest_over_time())
+            populate_ior(treq.interest_by_region())
+        except Exception as ex:
+            print(ex)
+            pass
     print("Interest over time language completed.")
 
     #FRAMEWORKS
@@ -51,16 +59,24 @@ def start():
     all_fw = [i.name for i in models.LibraryOrFramework.objects.all()]
     fw_cnt = len(all_fw)
     for i in range(0, fw_cnt + 1, 5):
-        print("Fetch for " + ", ".join(all_languages[i:i+4]))
-        treq.build_payload(kw_list=all_languages[i:i+4])
-        populate_iot_fw(treq.interest_over_time())
-        populate_ior_fw(treq.interest_by_region())
+        try:
+            print("Fetch for " + ", ".join(all_fw[i:i+4]))
+            treq.build_payload(kw_list=all_fw[i:i+4])
+            populate_iot_fw(treq.interest_over_time())
+            populate_ior_fw(treq.interest_by_region())
+        except Exception as ex:
+            print(ex)
+            continue
     if fw_cnt % 5 != 0:
-        slice_index = fw_cnt - int(fw_cnt / 5) * 5
-        print("Fetch for " + ", ".join(all_fw[-slice_index]))
-        treq.build_payload(kw_list=all_languages[-slice_index])
-        populate_iot_fw(treq.interest_over_time())
-        populate_ior_fw(treq.interest_by_region())
+        try:
+            slice_index = fw_cnt - int(fw_cnt / 5) * 5
+            print("Fetch for " + ", ".join(all_fw[-slice_index]))
+            treq.build_payload(kw_list=all_fw[-slice_index])
+            populate_iot_fw(treq.interest_over_time())
+            populate_ior_fw(treq.interest_by_region())
+        except Exception as ex:
+            print(ex)
+            pass
     print("Interest over time framework completed.")
 
 
