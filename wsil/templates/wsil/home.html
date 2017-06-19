@@ -33,11 +33,12 @@
                     {% for language in top10  %}
                         <h5>
                             <a href="{% url 'detail_lang' language.id %}">
-                                <li class="list-link"><span>{{ forloop.counter }} -</span> {{ language.language }}</li>
+                                <li class="list-link"><span>{{ forloop.counter }} -</span> {{ language.name }}</li>
                             </a>
                         </h5>
                     {% endfor %}
                 </ul>
+                <br/>
             </div>
         </div>
 

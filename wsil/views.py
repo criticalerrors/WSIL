@@ -26,7 +26,12 @@ class MainHomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MainHomeView, self).get_context_data(**kwargs)
-        context['top10'] = RepositoryUsingIt.objects.all().order_by('-repository_count')[:10]
+        top10 = [i.language for i in RepositoryUsingIt.objects.all().order_by('-repository_count')[:10]]
+        languages = []
+        for lang in top10:
+            l = Language.objects.get(name__iexact=lang)
+            languages.append(l)
+        context['top10'] = languages
         return context
 
 
@@ -36,8 +41,11 @@ class LanguageDetail(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(LanguageDetail, self).get_context_data(**kwargs)
         id = kwargs['lng']
-        self.language = get_object_or_404(RepositoryUsingIt, pk=id)
-        context['l_title'] = self.language.language
+        language_obj = Language.objects.get(pk=id)
+        language_name = language_obj.name
+        self.language = get_object_or_404(RepositoryUsingIt, language__iexact=language_name)
+        context['l_title'] = language_name
+        context['language'] = language_obj
         context['top10fwl'] = [] # TODO
         query = context['l_title']
         context['jobs_count'] = Job.get_all_job_for(query).count()
@@ -72,7 +80,10 @@ class InterestOverTimeLang(generics.ListAPIView):
     serializer_class = InterestOverTimeSerializer
 
     def get_queryset(self):
-        return InterestOverTimeLanguage.objects.filter(language_name__iexact=self.kwargs['lng']).order_by('date')
+        language_name = Language.objects.get(pk=self.kwargs['pk']).name
+        print(language_name)
+        lan = InterestOverTimeLanguage.objects.filter(language_name__iexact=language_name).order_by('date')
+        return lan
 
 
 def handler404(request):

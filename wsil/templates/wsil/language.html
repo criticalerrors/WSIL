@@ -104,6 +104,6 @@
     <script src="{% static 'js/plot-lang.js' %}">
     </script>
     <script>
-        getPlot('{{ l_title }}', 'interestTimeScatter', 'scatter', "{% url 'iot_lang' l_title.lower %}");
+        getPlot('{{ l_title }}', 'interestTimeScatter', 'scatter', "{% url 'iot_lang' language.id %}");
     </script>
 {% endblock %}

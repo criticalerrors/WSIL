@@ -5,7 +5,7 @@ from wsil.models import Language, RepositoryUsingIt, InterestOverTimeLanguage
 class SuggestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Language
-        fields = ("name",)
+        fields = ("name", "id",)
 
 
 class Top10Serializer(serializers.ModelSerializer):

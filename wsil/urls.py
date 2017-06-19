@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^about/$', views.MainHomeView.as_view(), name='about_page'), # TODO
     url(r'^api/suggest/(?P<kw>[a-z]+)$', views.SuggestedView.as_view(), name="suggestion_api"),
     url(r'^api/top10/$', views.Top10ForCharts.as_view(), name="top10charts"),
-    url(r'^api/interest_time/(?P<lng>[a-z]+)$', views.InterestOverTimeLang.as_view(), name="iot_lang")
+    url(r'^api/interest_time/(?P<pk>[0-9]+)$', views.InterestOverTimeLang.as_view(), name="iot_lang")
 ]
 
 

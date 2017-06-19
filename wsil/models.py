@@ -38,7 +38,8 @@ class QuestionOnIt(models.Model):
             else:
                 t = threading.Thread(target=clear_cache, args=(QuestionOnIt,))
                 t.start()
-        url = "https://api.stackexchange.com/2.2/tags?order=desc&sort=popular&inname="+lang.lower()+"&site=stackoverflow"
+        urllang = lang.replace('+', '%2B').replace('#','%23')
+        url = "https://api.stackexchange.com/2.2/tags?order=desc&sort=popular&inname="+urllang.lower()+"&site=stackoverflow"
         json = get_url_req(url)['items']
         for tag in json:
             if lang.lower() == tag['name'].lower():
