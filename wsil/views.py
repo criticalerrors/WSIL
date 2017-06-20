@@ -46,7 +46,7 @@ class LanguageDetail(TemplateView):
         self.language = get_object_or_404(RepositoryUsingIt, language__iexact=language_name)
         context['l_title'] = language_name
         context['language'] = language_obj
-        context['top10fwl'] = [] # TODO
+        context['fwls'] = language_obj.libraryorframework_set.all()
         query = context['l_title']
         context['jobs_count'] = Job.get_all_job_for(query).count()
         context['jobs'] = Job.get_all_job_for(query)

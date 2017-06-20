@@ -31,12 +31,8 @@
                     <h3 style="color:black">Top10 LANGUAGE</h3>
                     <br/>
                     {% for language in top10  %}
-                        <h5>
-                            <li class="list-link"><a href="{% url 'detail_lang' language.id %}">
-                                <span>{{ forloop.counter }} -</span> {{ language.name }}
-                            </a>
-                            </li>
-                        </h5>
+                        {% url 'detail_lang' language.id as url_value %}
+                        {% include 'wsil/list-link.html' with url=url_value counter=forloop.counter name=language.name %}
                     {% endfor %}
                 </ul>
                 <br/>
