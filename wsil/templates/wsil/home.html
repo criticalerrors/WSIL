@@ -2,15 +2,12 @@
 
 {% load render_bundle from webpack_loader %}
 {% load static %}
-{% load jsonify %}
 {% block title %}
     {{ APP_NAME }}
 {% endblock %}
 {% block head %}
     {{ block.super }}
     <script>
-        window.props = {{ props | jsonify }};
-        window.props.django_url = {{ HTTP_HOST }};
     </script>
     <script src="{% static 'js/plotly-latest.min.js' %}"></script>
 {% endblock %}

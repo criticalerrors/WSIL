@@ -1,7 +1,6 @@
-from django.conf.urls import url, handler404
+from django.conf.urls import url, handler404, handler500
 from . import views
 
-handler404 = 'views.handler404'
 
 urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
@@ -14,8 +13,6 @@ urlpatterns = [
     url(r'^api/top10/$', views.Top10ForCharts.as_view(), name="top10charts"),
     url(r'^api/interest_time/(?P<pk>[0-9]+)$', views.InterestOverTimeLang.as_view(), name="iot_lang")
 ]
-
-
 
 
 

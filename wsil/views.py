@@ -1,9 +1,8 @@
 from django.views.generic import TemplateView, DetailView
 from django.shortcuts import render_to_response, get_object_or_404
-from .models import RepositoryUsingIt, Language, InterestOverTimeFrameworkLibrary, LibraryOrFramework
+from django.http import HttpResponse
+from .models import RepositoryUsingIt, Language
 from .models import InterestOverTimeLanguage, QuestionOnIt, Job, Course
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
 from rest_framework import generics
 from wsil.serializer import SuggestionSerializer, Top10Serializer, InterestOverTimeSerializer
 
@@ -84,9 +83,3 @@ class InterestOverTimeLang(generics.ListAPIView):
         print(language_name)
         lan = InterestOverTimeLanguage.objects.filter(language_name__iexact=language_name).order_by('date')
         return lan
-
-
-def handler404(request):
-    response = render_to_response('wsil/404.html', {})
-    response.status_code = 404
-    return response
