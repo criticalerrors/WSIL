@@ -29,12 +29,13 @@
             <div class="img-rounded page" >
                 <ul class="top-lang-list">
                     <h3 style="color:black">Top10 LANGUAGE</h3>
-                <br/>
+                    <br/>
                     {% for language in top10  %}
                         <h5>
-                            <a href="{% url 'detail_lang' language.id %}">
-                                <li class="list-link"><span>{{ forloop.counter }} -</span> {{ language.name }}</li>
+                            <li class="list-link"><a href="{% url 'detail_lang' language.id %}">
+                                <span>{{ forloop.counter }} -</span> {{ language.name }}
                             </a>
+                            </li>
                         </h5>
                     {% endfor %}
                 </ul>
@@ -47,14 +48,14 @@
 
             <div class="page">
                 <h4>Repository count per language</h4>
-               <div id="barPlot"></div>
+                <div id="barPlot"></div>
             </div>
         </div>
 
-     <div class="col-md-2">
+        <div class="col-md-2">
 
             <div class="page">
-                <div id="search-bar">
+                <div id="search-bar" class="search-box">
 
                 </div>
                 {% render_bundle 'main'%}
