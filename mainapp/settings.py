@@ -141,7 +141,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
     os.path.join(os.path.join(BASE_DIR, 'wsil'), 'assets'),
-    os.path.join(os.path.join(os.path.join(BASE_DIR, 'wsil'), 'assets'), 'dist'),
 ]
 
 # Simplified static file serving.
