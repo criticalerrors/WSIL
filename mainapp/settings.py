@@ -140,7 +140,8 @@ STATIC_URL = '/static/'
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
-    os.path.join(BASE_DIR, 'wsil/assets'),
+    os.path.join(os.path.join(BASE_DIR, 'wsil'), 'assets'),
+    os.path.join(os.path.join(os.path.join(BASE_DIR, 'wsil'), 'assets'), 'dist'),
 ]
 
 # Simplified static file serving.
@@ -151,7 +152,7 @@ WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': 'dist/',
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
-        'CACHE': not DEBUG,
+        'CACHE': not DEBUG
     }
 }
 
