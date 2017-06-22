@@ -47,7 +47,7 @@ class LanguageDetail(TemplateView):
         context['language'] = language_obj
         context['fwls'] = language_obj.libraryorframework_set.all()
         query = context['l_title']
-        context['jobs_count'] = Job.get_all_job_for(query).count()
+        context['jobs_count'] = len(Job.get_all_job_for(query))
         context['jobs'] = Job.get_all_job_for(query)
         context['question_count'] = QuestionOnIt.get_count_for_lang(query).count
         context['courses'] = Course.get_courses_for_lang(query)

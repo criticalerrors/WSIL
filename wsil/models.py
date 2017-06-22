@@ -220,7 +220,7 @@ class Job(models.Model):
     @classmethod
     def get_all_job_for(cls, lang):
         t = None
-        in_db = cls.objects.filter(description__contains=lang).filter(cache_date__gt=timezone.now())
+        in_db = cls.objects.filter(query__contains=lang).filter(cache_date__gt=timezone.now())
         if len(in_db) != 0:
             return in_db
         t = threading.Thread(target=clear_cache, args=(Job,))
