@@ -1,18 +1,14 @@
 {% extends "wsil/base.html" %}
 
-{% load render_bundle from webpack_loader %}
 {% load static %}
 {% load jsonify %}
 {% block title %}
-    {{ l_title }}
+    Job:  {{ object.job_title | title }}
 {% endblock %}
 {% block head %}
     {{ block.super }}
-    <script>
-        window.props = {{ props | jsonify }};
-        window.props.django_url = {{ HTTP_HOST }};
-    </script>
-    <script src="{% static 'js/plotly-latest.min.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 {% endblock %}
 {% block container %}
     <div class="row">
@@ -22,70 +18,48 @@
 
             {% endblock %}
         </div>
+
     </div>
-    <div class="row">
-        <div class="col-md-2">
-            <div class="img-rounded page" >
-                <ul class="top-lang-list">
-                    <h3 style="color:black">Top 10 {{ l_title }} frameworks</h3>
-                    <br/>
-                    {% if not top10fwl %}
-                        <h4>No framework available</h4>
-                    {% else %}
-                        {% for fwl in top10fwl  %}
-                            <h5>
-                                <a href="http://{{ request.get_host }}/details/{{ fwl.name | lower }}">
-                                    <li class="list-link"><span>{{ forloop.counter }} -</span> {{ fwl.name }}</li>
-                                </a>
-                            </h5>
-                        {% endfor %}
-                    {% endif %}
-                </ul>
+    <div class="container page">
+        <h1>{{ object.job_title }}</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <h4>by</h4>
+                <h3><a href="{{ object.company_url }}">{{ object.company_name }}</a></h3>
             </div>
         </div>
+        <div class="row">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="{{ object.company_url }}">{% include 'wsil/detail-list.html' with key="Company Name" value=object.company_name %}</a></li>
+                <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Location" value=object.location_name %}</li>
+                <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Date" value=object.post_date %}</li>
+                <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Language" value=object.lang %}</li>
 
-
-        <div class="col-md-7 page">
-
-                <div class="col-md-6">
-                    <h4>Interest over time for {{ l_title | upper }}</h4>
-                    <div id="interestTimeScatter"></div>
-                </div>
-                <div class="col-md-6">
-                    {% include 'wsil/highlights-rows.html' with description="Question on it" value=question_count %}
-                    {% include 'wsil/highlights-rows.html' with description="Jobs for it" value=jobs_count %}
-                </div>
+            </ul>
         </div>
-
-        <div class="col-md-3">
-
-            <div class="page">
-                <h4>Jobs</h4>
-                <br />
-                {% if jobs_count == "0" %}
-                    <h5>No jobs available for {{ l_title }}</h5>
+        <div class="row">
+            <p>
+                {{ object.description | striptags }}
+            </p>
+        </div>
+        {% if partners %}
+            <div class="row">
+                <h6>Partner{{ partners | pluralize }}</h6>
+                {% if partners.count <= 1 %}
+                    <img src="{{ object.logo }}">
+                    <ul class="list-group">
+                        <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Partner Name" value=partners.0.partner_name %}</li>
+                    </ul>
                 {% else %}
-                    <h5>Found {{ jobs_count }} jobs:</h5>
-                    {% for job in jobs %}
-                        <div class="row">
-                            <h6>{{ job.job_title }}</h6>
-                            <div>
-                            {{ job.description | truncatechars:150}}
-                                <div class="row">
-                                    <div class="col-sm-4">Date:</div>
-                                    <div class="col-sm-8">{{ job.post_date }}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-4">Company:</div>
-                                    <div class="col-sm-8">{{ job.company_name }}</div>
-                                </div>
-
-                            </div>
-                        </div>
+                    <img src="{{ object.logo }}">
+                    {% for partner in partners %}
+                        <ul class="list-group">
+                            <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Partner Name" value=partner.partner_name %}</li>
+                        </ul>
                     {% endfor %}
                 {% endif %}
             </div>
-        </div>
+        {% endif %}
     </div>
 
 
@@ -94,9 +68,4 @@
 
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static 'js/plot-lang.js' %}">
-    </script>
-    <script>
-        getPlot('{{ l_title }}', 'interestTimeScatter', 'scatter');
-    </script>
 {% endblock %}

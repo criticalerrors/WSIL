@@ -214,7 +214,7 @@ class Course(models.Model):
 
 class Job(models.Model):
     job_title = models.CharField(max_length=30)
-    description = models.CharField(max_length=150, null=True)
+    description = models.CharField(max_length=1000, null=True)
     post_date = models.CharField(max_length=10, null=True)
     company_name = models.CharField(max_length=30, null=True)
     company_url = models.URLField(null=True)

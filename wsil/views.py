@@ -85,7 +85,7 @@ class LanguageDetail(TemplateView):
 class JobDetail(DetailView):
     title = "Job Detail"
     model = Job
-    template_name = "wsil/job.html" # TODO
+    template_name = "wsil/job.html"
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
