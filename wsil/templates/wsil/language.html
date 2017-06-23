@@ -8,13 +8,9 @@
 {% endblock %}
 {% block head %}
     {{ block.super }}
-    <script>
-        window.props = {{ props | jsonify }};
-        window.props.django_url = {{ HTTP_HOST }};
-    </script>
     <script src="{% static 'js/plotly-latest.min.js' %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 {% endblock %}
 {% block container %}
     <div class="row">
@@ -27,10 +23,10 @@
     </div>
     <div class="container">
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#home">Statistics</a></li>
-            <li><a data-toggle="tab" href="#menu1">Frameworks</a></li>
-            <li><a data-toggle="tab" href="#menu2">Jobs</a></li>
-            <li><a data-toggle="tab" href="#menu3">Courses</a></li>
+            <li class="lang-tabbar active"><a data-toggle="tab" href="#home">Statistics</a></li>
+            <li class=" lang-tabbar"><a data-toggle="tab" href="#menu1">Frameworks</a></li>
+            <li class=" lang-tabbar"><a data-toggle="tab" href="#menu2">Jobs</a></li>
+            <li class=" lang-tabbar"><a data-toggle="tab" href="#menu3">Courses</a></li>
         </ul>
         <div class="tab-content">
             <div id="home" class="tab-pane fade in active">
@@ -38,6 +34,7 @@
                     <div class="col-md-6">
                         <h4>Interest over time for {{ l_title | upper }}</h4>
                         <div id="interestTimeScatter"></div>
+                        <div id="interestRegionLang"></div>
                     </div>
                     <div class="col-md-6">
                         {% include 'wsil/highlights-rows.html' with description="Question on it" value=question_count %}
@@ -48,62 +45,86 @@
             </div>
             <div id="menu1" class="tab-pane fade">
                 <div class="col-md-12 page">
-                        <ul class="top-lang-list">
-                            <h3 style="color:black">List of {{ l_title }} frameworks</h3>
-                            <br/>
-                            {% if not fwls %}
-                                <h4>No framework available</h4>
-                            {% else %}
-                                {% for fwl in fwls %}
-                                    {% url 'detail_lang' language.id as url_value %}
-                                    {% include 'wsil/list-link.html' with url=url_value counter=forloop.counter name=fwl.name description=fwl.description %}
-                                {% endfor %}
-                            {% endif %}
-                        </ul>
+                    <ul class="top-lang-list">
+                        <h3 style="color:black">List of {{ l_title }} frameworks</h3>
+                        <br/>
+                        {% if not fwls %}
+                            <h4>No framework available</h4>
+                        {% else %}
+                            {% for fwl in fwls %}
+                                {% url 'detail_lang' language.id as url_value %}
+                                {% include 'wsil/list-link.html' with url=url_value counter=forloop.counter name=fwl.name description=fwl.description %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
 
             <div id="menu2" class="tab-pane fade">
                 <div class="col-md-12 page">
-                        <h4>Jobs</h4>
-                        <br />
-                        {% if jobs_count == "0" %}
-                            <h5>No jobs available for {{ l_title }}</h5>
-                        {% else %}
-                            <h5>Found {{ jobs_count }} jobs:</h5>
-                            {% for job in jobs %}
-                                <div class="row">
-                                    <h6>
-                                        <a href="{% url 'job_detail' job.id %}">
-                                            {{ job.job_title }}
-                                        </a>
-                                    </h6>
-                                    <div class="col-sm-12">
-                                        {{ job.description | truncatechars:150 |striptags}}
-                                        <div class="row">
-                                            <div class="col-sm-4">Date:</div>
-                                            <div class="col-sm-8">{{ job.post_date }}</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-4">Company:</div>
-                                            <div class="col-sm-8">
-                                                <a href="{{ job.company_url }}">
-                                                    {{ job.company_name }}
-                                                </a>
-                                            </div>
-                                        </div>
-
+                    <h4>Jobs</h4>
+                    <br />
+                    {% if jobs_count == "0" %}
+                        <h5>No jobs available for {{ l_title }}</h5>
+                    {% else %}
+                        <h5>Found {{ jobs_count }} job{{ jobs | pluralize }}:</h5>
+                        {% for job in jobs %}
+                            <div class="row">
+                                <h6>
+                                    <a href="{% url 'job_detail' job.id %}">
+                                        {{ job.job_title }}
+                                    </a>
+                                </h6>
+                                <div class="col-sm-12">
+                                    {{ job.description | truncatechars:150 |striptags}}
+                                    <div class="row">
+                                        <div class="col-sm-4">Date:</div>
+                                        <div class="col-sm-8">{{ job.post_date }}</div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">Company:</div>
+                                        <div class="col-sm-8">
+                                            <a href="{{ job.company_url }}">
+                                                {{ job.company_name }}
+                                            </a>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <hr />
-                            {% endfor %}
-                        {% endif %}
+                            </div>
+                            <hr />
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
 
             <div id="menu3" class="tab-pane fade">
                 <div class="col-md-12 page">
-                    <h1>Work in progress. Be patient!!!</h1>
+                    <h4>Courses</h4>
+                    <br />
+                    {% if courses.count == "0" %}
+                        <h5>No courses available for {{ l_title }}</h5>
+                    {% else %}
+                        <h5>Found {{ courses.count }} course{{ courses | pluralize }}:</h5>
+                        {% for course in courses %}
+                            <div class="row">
+                                <h6>
+                                    <a href="{% url 'course_detail' course.course_id %}">
+                                        {{ course.slug }}
+                                    </a>
+                                </h6>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        {{ course.description | truncatechars:150 |striptags}}
+                                    </div>
+                                </div>
+                                <ul class="list-group">
+                                    <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Course Type" value=course.course_type %}</li>
+                                </ul>
+                            </div>
+                            <hr />
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -117,7 +138,10 @@
     {{ block.super }}
     <script src="{% static 'js/plot-lang.js' %}">
     </script>
+    <script src="{% static 'js/interst_by_region.js' %}">
+    </script>
     <script>
         getPlot('{{ l_title }}', 'interestTimeScatter', 'scatter', "{% url 'iot_lang' language.id %}");
+        plotRegion('{% url 'ibr_lang' language.id %}', "Interest by region for {{ l_title }}", "interestRegionLang")
     </script>
 {% endblock %}

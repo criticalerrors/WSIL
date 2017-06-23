@@ -1,0 +1,70 @@
+{% extends "wsil/base.html" %}
+
+{% load static %}
+{% load jsonify %}
+{% block title %}
+    {{ l_title }}
+{% endblock %}
+{% block head %}
+    {{ block.super }}
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% endblock %}
+{% block container %}
+    <div class="row">
+        <div class="col-md-12">
+            {% block navbar %}
+                {{ block.super }}
+
+            {% endblock %}
+        </div>
+
+    </div>
+    <div class="container page">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{{ object.photo_url }}" />
+            </div>
+            <div class="col-md-8">
+                <h2><a href="{{ object.url }}">{{ object.slug }}</a></h2>
+            </div>
+        </div>
+        <div class="row">
+            <ul class="list-group">
+                <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Course Type" value=object.course_type %}</li>
+                <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Workload" value=object.workload %}</li>
+                <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Source" value=object.source %}</li>
+            </ul>
+        </div>
+        <div class="row">
+            <p>
+                {{ object.description | striptags }}
+            </p>
+        </div>
+        {% if partners %}
+            <div class="row">
+                <h6>Partner{{ partners | pluralize }}</h6>
+                {% if partners.count <= 1 %}
+                    <img src="{{ object.logo }}">
+                    <ul class="list-group">
+                        <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Partner Name" value=partners.0.partner_name %}</li>
+                    </ul>
+                {% else %}
+                    <img src="{{ object.logo }}">
+                    {% for partner in partners %}
+                        <ul class="list-group">
+                            <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Partner Name" value=partner.partner_name %}</li>
+                        </ul>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+{% endblock %}

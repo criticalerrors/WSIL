@@ -125,6 +125,33 @@ class InterestByRegionFrameworkLibrary(models.Model):
         unique_together = (("fw_or_lib", "region"),)
 
 
+class CoursePartner(models.Model):
+    partner_id = models.CharField(max_length=30, null=False)
+    course_id = models.CharField(max_length=30, null=False)
+    partner_name = models.CharField(max_length=30, null=True)
+    partner_shortname = models.CharField(null=True, max_length=5)
+
+    @classmethod
+    def get_course_partner(cls, course_id):
+        c = Course.objects.get(course_id=course_id)
+        if c.partner.count() != 0:
+            return c.partner.all()
+
+        url = "https://api.coursera.org/api/courses.v1/"+ course_id +"?includes=partnerIds"
+        json = get_url_req(url)
+        if 'linked' in json and 'partners.v1' in json['linked']:
+            for partner in json['linked']['partners.v1']:
+                p = None
+                try:
+                    p = cls.objects.get(partner_id=str(partner['id']))
+                    c.partner.add(p)
+                except:
+                    p = cls(partner_id=str(partner['id']), partner_name=partner['name'], partner_shortname=partner['shortName'], course_id=c.course_id)
+                    p.save()
+                    c.partner.add(p)
+        return c.partner.all()
+
+
 class Course(models.Model):
     course_id = models.CharField(max_length=30, primary_key=True)
     slug = models.CharField(max_length=30, null=True)
@@ -135,6 +162,7 @@ class Course(models.Model):
     workload = models.CharField(max_length=100, null=True)
     url = models.URLField(null=True)
     cache_date = models.DateTimeField(null=True, default=tomorrow)
+    partner = models.ManyToManyField(CoursePartner)
     source = models.CharField(null=False, max_length=10, default="COURSERA")
 
     @classmethod
@@ -182,28 +210,6 @@ class Course(models.Model):
         print(courses)
         cls.objects.bulk_create(courses)
         return courses
-
-
-class CoursePartner(models.Model):
-    partner_id = models.CharField(max_length=30, unique=True)
-    course_id = models.CharField(max_length=30, null=True)
-    partner_name = models.CharField(max_length=30, null=True)
-    partner_shortname = models.CharField(null=True, max_length=5)
-
-    @classmethod
-    def get_course_partner(cls, course_id):
-        partner = cls.objects.filter(course_id=course_id)
-        if partner.count() != 0:
-            return partner
-        url = "https://api.coursera.org/api/courses.v1/"+ course_id +"?includes=partnerIds"
-        json = get_url_req(url)
-        if 'linked' in json and 'partners.v1' in json['linked']:
-            for partner in json['linked']['partners.v1']:
-                print(partner)
-                c = Course.objects.filter(pk=course_id)
-                p = cls(partner_id=str(partner['id']), partner_name=partner['name'], partner_shortname=partner['shortName'], course_id=c)
-                p.save()
-                return p
 
 
 class Job(models.Model):

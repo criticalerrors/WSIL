@@ -3,6 +3,8 @@
         <a href="{{ url }}">
             <h4>{{ counter }} -{{ name }}</h4>
         </a>
-        <p>{{ description }}</p>
     </li>
 </h5>
+{% if description %}
+<p>{{ description }}</p>
+{% endif %}
