@@ -3,7 +3,7 @@
 {% load static %}
 {% load jsonify %}
 {% block title %}
-    {{ l_title }}
+    Course:  {{ object.slug | title }}
 {% endblock %}
 {% block head %}
     {{ block.super }}

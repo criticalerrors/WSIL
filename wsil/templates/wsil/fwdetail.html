@@ -4,7 +4,7 @@
 {% load static %}
 {% load jsonify %}
 {% block title %}
-    {{ l_title }}
+    {{ object.name | title }}
 {% endblock %}
 {% block head %}
     {{ block.super }}
@@ -24,7 +24,7 @@
     <div class="container">
         <ul class="nav nav-tabs">
             <li class="lang-tabbar active"><a data-toggle="tab" href="#home">Statistics</a></li>
-            <li class=" lang-tabbar"><a data-toggle="tab" href="#menu1">Frameworks</a></li>
+            <li class=" lang-tabbar"><a data-toggle="tab" href="#menu1">Detail</a></li>
             <li class=" lang-tabbar"><a data-toggle="tab" href="#menu2">Jobs</a></li>
             <li class=" lang-tabbar"><a data-toggle="tab" href="#menu3">Courses</a></li>
         </ul>
@@ -32,31 +32,37 @@
             <div id="home" class="tab-pane fade in active">
                 <div class="col-md-12 page">
                     <div class="col-md-6">
-                        <h4>Interest over time for {{ l_title | upper }}</h4>
-                        <hr/>
-                        <h4>Interest by region for {{ l_title | upper }}</h4>
+                        <h4>Interest over time for {{ object.name | upper }}</h4>
                         <div id="interestTimeScatter"></div>
+                        <hr/>
+                        <h4>Interest by region for {{ object.name | upper }}</h4>
                         <div id="interestRegionLang"></div>
                     </div>
                     <div class="col-md-6">
                         {% include 'wsil/highlights-rows.html' with description="Question on it" value=question_count %}
-                        {% include 'wsil/highlights-rows.html' with description="Jobs for it" value=jobs_count %}
-                        {% include 'wsil/highlights-rows.html' with description="Course for it" value=courses.count %}
+                        {% include 'wsil/highlights-rows.html' with description="Jobs for it" value=jobs.count %}
+                        {% include 'wsil/highlights-rows.html' with description="Courses for it" value=courses.count %}
                     </div>
                 </div>
             </div>
             <div id="menu1" class="tab-pane fade">
                 <div class="col-md-12 page">
                     <ul class="top-lang-list">
-                        <h3 style="color:black">List of {{ l_title }} frameworks</h3>
+                        <h3 style="color:black">Details</h3>
                         <br/>
-                        {% if not fwls %}
-                            <h4>No framework available</h4>
+                        {% if details %}
+                            <div class="row">
+                                <ul class="list-group">
+                                    {% for field, value in details %}
+                                        <li class="list-group-item">
+                                        {% include 'wsil/detail-list.html' with key=field value=value %}
+                                        </li>
+                                    {% endfor %}
+
+                                </ul>
+                            </div>
                         {% else %}
-                            {% for fwl in fwls %}
-                                {% url 'detail_fw' fwl.id as url_value %}
-                                {% include 'wsil/list-link.html' with url=url_value counter=forloop.counter name=fwl.name description=fwl.description %}
-                            {% endfor %}
+                            <h4>No Data Available</h4>
                         {% endif %}
                     </ul>
                 </div>
@@ -66,10 +72,10 @@
                 <div class="col-md-12 page">
                     <h4>Jobs</h4>
                     <br />
-                    {% if jobs_count == "0" %}
-                        <h5>No jobs available for {{ l_title }}</h5>
+                    {% if jobs.count == "0" %}
+                        <h5>No jobs available for {{ object.name }}</h5>
                     {% else %}
-                        <h5>Found {{ jobs_count }} job{{ jobs | pluralize }}:</h5>
+                        <h5>Found {{ jobs.count }} job{{ jobs | pluralize }}:</h5>
                         {% for job in jobs %}
                             <div class="row">
                                 <h6>
@@ -105,7 +111,7 @@
                     <h4>Courses</h4>
                     <br />
                     {% if courses.count == "0" %}
-                        <h5>No courses available for {{ l_title }}</h5>
+                        <h5>No courses available for {{ object.name }}</h5>
                     {% else %}
                         <h5>Found {{ courses.count }} course{{ courses | pluralize }}:</h5>
                         {% for course in courses %}
@@ -143,7 +149,7 @@
     <script src="{% static 'js/interst_by_region.js' %}">
     </script>
     <script>
-        getPlot('{{ l_title }}', 'interestTimeScatter', 'scatter', "{% url 'iot_lang' language.id %}");
-        plotRegion('{% url 'ibr_lang' language.id %}', "Interest by region for {{ l_title }}", "interestRegionLang")
+        getPlot('{{ l_title }}', 'interestTimeScatter', 'scatter', "{% url 'iot_fw' object.id %}");
+        plotRegion('{% url 'ibr_fw' object.id %}', "Interest by region for {{ object.name }}", "interestRegionLang")
     </script>
 {% endblock %}

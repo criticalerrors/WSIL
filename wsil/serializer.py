@@ -22,3 +22,16 @@ class InterestOverTimeSerializer(serializers.Serializer):
 class InterestByRegionSerializer(serializers.Serializer):
     interest_rate = serializers.IntegerField()
     region = serializers.CharField()
+
+
+class InterestOverTimeFwSerializer(serializers.Serializer):
+    date = serializers.DateTimeField()
+    interest_rate = serializers.IntegerField()
+
+
+class InterestByRegionFwSerializer(serializers.Serializer):
+    interest_rate = serializers.IntegerField()
+    region = serializers.CharField()
+
+
+

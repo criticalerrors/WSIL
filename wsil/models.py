@@ -75,18 +75,18 @@ class LibraryOrFramework(models.Model):
 
 
 class Features(models.Model):
-    library_framework_name = models.CharField(unique=True, max_length=40)
-    ajax = models.CharField(max_length=30, null=True)
-    mvc_framework = models.CharField(max_length=40, null=True)
-    mvc_push_pull = models.CharField(max_length=40, null=True)
-    localization = models.CharField(max_length=40, null=True)
-    orm =  models.CharField(max_length=40, null=True)
-    testing_framework =  models.CharField(max_length=40, null=True)
-    db_migration_framework = models.CharField(max_length=40, null=True)
-    security_framework = models.CharField(max_length=40, null=True)
-    template_framework = models.CharField(max_length=40, null=True)
-    caching_framework = models.CharField(max_length=40, null=True)
-    form_validation_framework = models.CharField(max_length=40, null=True)
+    library_framework_name = models.CharField(unique=True, max_length=40, help_text="Library or Framework name")
+    ajax = models.CharField(max_length=30, null=True, help_text="AJAX")
+    mvc_framework = models.CharField(max_length=40, null=True, help_text="MVC Framework")
+    mvc_push_pull = models.CharField(max_length=40, null=True, help_text="MVC Push Pull")
+    localization = models.CharField(max_length=40, null=True, help_text="Localization")
+    orm =  models.CharField(max_length=40, null=True, help_text="ORM")
+    testing_framework =  models.CharField(max_length=40, null=True, help_text="Testing Framework")
+    db_migration_framework = models.CharField(max_length=40, null=True, help_text="DB Migration Framework")
+    security_framework = models.CharField(max_length=40, null=True, help_text="Security Framework")
+    template_framework = models.CharField(max_length=40, null=True, help_text="Template Framework")
+    caching_framework = models.CharField(max_length=40, null=True, help_text="Caching Framework")
+    form_validation_framework = models.CharField(max_length=40, null=True, help_text="Form Validation Framework")
 
 
 class InterestOverTimeLanguage(models.Model):
@@ -208,7 +208,7 @@ class Course(models.Model):
                 print(ex)
         t.join()
         print(courses)
-        cls.objects.bulk_create(courses)
+        courses = cls.objects.bulk_create(courses)
         return courses
 
 
