@@ -72,7 +72,7 @@
                 <div class="col-md-12 page">
                     <h4>Jobs</h4>
                     <br />
-                    {% if jobs.count == "0" %}
+                    {% if jobs.count == 0 %}
                         <h5>No jobs available for {{ object.name }}</h5>
                     {% else %}
                         <h5>Found {{ jobs.count }} job{{ jobs | pluralize }}:</h5>
@@ -110,7 +110,7 @@
                 <div class="col-md-12 page">
                     <h4>Courses</h4>
                     <br />
-                    {% if courses.count == "0" %}
+                    {% if courses.count == 0 %}
                         <h5>No courses available for {{ object.name }}</h5>
                     {% else %}
                         <h5>Found {{ courses.count }} course{{ courses | pluralize }}:</h5>
@@ -150,6 +150,6 @@
     </script>
     <script>
         getPlot('{{ l_title }}', 'interestTimeScatter', 'scatter', "{% url 'iot_fw' object.id %}");
-        plotRegion('{% url 'ibr_fw' object.id %}', "Interest by region for {{ object.name }}", "interestRegionLang")
+        plotRegion('{% url 'ibr_fw' object.id %}', "", "interestRegionLang")
     </script>
 {% endblock %}

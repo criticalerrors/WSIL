@@ -175,7 +175,7 @@ class Course(models.Model):
         t.start()
         courses = []
         # COURSERA
-        url = "https://api.coursera.org/api/courses.v1?q=search&query="+lang+"&fields=partnerLogo,photoUrl,description,workload,previewLink"
+        url = "https://api.coursera.org/api/courses.v1?q=search&query=\""+lang+"\"&fields=partnerLogo,photoUrl,description,workload,previewLink"
         json = get_url_req(url)
         for course in json['elements']:
             try:
@@ -207,9 +207,8 @@ class Course(models.Model):
                 print("Missing data in Udacity")
                 print(ex)
         t.join()
-        print(courses)
-        courses = cls.objects.bulk_create(courses)
-        return courses
+        cls.objects.bulk_create(courses)
+        return cls.objects.filter(description__contains=lang)
 
 
 class Job(models.Model):

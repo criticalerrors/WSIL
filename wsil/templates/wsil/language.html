@@ -34,8 +34,8 @@
                     <div class="col-md-6">
                         <h4>Interest over time for {{ l_title | upper }}</h4>
                         <hr/>
-                        <h4>Interest by region for {{ l_title | upper }}</h4>
                         <div id="interestTimeScatter"></div>
+                        <h4>Interest by region for {{ l_title | upper }}</h4>
                         <div id="interestRegionLang"></div>
                     </div>
                     <div class="col-md-6">
@@ -66,10 +66,10 @@
                 <div class="col-md-12 page">
                     <h4>Jobs</h4>
                     <br />
-                    {% if jobs_count == "0" %}
+                    {% if jobs.count == 0 %}
                         <h5>No jobs available for {{ l_title }}</h5>
                     {% else %}
-                        <h5>Found {{ jobs_count }} job{{ jobs | pluralize }}:</h5>
+                        <h5>Found {{ jobs.count }} job{{ jobs | pluralize }}:</h5>
                         {% for job in jobs %}
                             <div class="row">
                                 <h6>
@@ -104,7 +104,7 @@
                 <div class="col-md-12 page">
                     <h4>Courses</h4>
                     <br />
-                    {% if courses.count == "0" %}
+                    {% if courses.count == 0 %}
                         <h5>No courses available for {{ l_title }}</h5>
                     {% else %}
                         <h5>Found {{ courses.count }} course{{ courses | pluralize }}:</h5>
@@ -144,6 +144,6 @@
     </script>
     <script>
         getPlot('{{ l_title }}', 'interestTimeScatter', 'scatter', "{% url 'iot_lang' language.id %}");
-        plotRegion('{% url 'ibr_lang' language.id %}', "Interest by region for {{ l_title }}", "interestRegionLang")
+        plotRegion('{% url 'ibr_lang' language.id %}', "", "interestRegionLang")
     </script>
 {% endblock %}

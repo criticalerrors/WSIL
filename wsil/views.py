@@ -53,10 +53,9 @@ class FrameworkDetail(DetailView):
             context['details'] = fields
         except:
             pass
-        jobs =  Job.get_all_job_for(fw_name)
-        context['jobs'] = jobs if jobs.count() > 0 else []
-        courses = Course.get_courses_for_lang(fw_name)
-        context['courses'] = courses if courses.count() > 0 else []
+
+        context['jobs'] = Job.get_all_job_for(fw_name)
+        context['courses'] = Course.get_courses_for_lang(fw_name)
         return context
 
 
