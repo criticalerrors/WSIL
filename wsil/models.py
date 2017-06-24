@@ -258,7 +258,7 @@ class Job(models.Model):
                 continue
         t.join()
         Job.objects.bulk_create(jobs_list)
-        return jobs_list
+        return Job.objects.filter(query__contains=lang)
 
 
 def clear_cache(model):

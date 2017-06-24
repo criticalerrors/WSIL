@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-md-6">
                         {% include 'wsil/highlights-rows.html' with description="Question on it" value=question_count %}
-                        {% include 'wsil/highlights-rows.html' with description="Jobs for it" value=jobs_count %}
+                        {% include 'wsil/highlights-rows.html' with description="Jobs for it" value=jobs.count %}
                         {% include 'wsil/highlights-rows.html' with description="Course for it" value=courses.count %}
                     </div>
                 </div>
