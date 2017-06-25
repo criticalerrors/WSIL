@@ -30,10 +30,10 @@
             </div>
         </div>
         <div class="row">
-            <ul class="list-group">
-                <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Course Type" value=object.course_type %}</li>
-                <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Workload" value=object.workload %}</li>
-                <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Source" value=object.source %}</li>
+            <ul>
+                <li>{% include 'wsil/detail-list.html' with key="Course Type" value=object.course_type %}</li>
+                <li>{% include 'wsil/detail-list.html' with key="Workload" value=object.workload %}</li>
+                <li>{% include 'wsil/detail-list.html' with key="Source" value=object.source %}</li>
             </ul>
         </div>
         <div class="row">
@@ -46,14 +46,14 @@
                 <h6>Partner{{ partners | pluralize }}</h6>
                 {% if partners.count <= 1 %}
                     <img src="{{ object.logo }}">
-                    <ul class="list-group">
-                        <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Partner Name" value=partners.0.partner_name %}</li>
+                    <ul>
+                        <li>{% include 'wsil/detail-list.html' with key="Partner Name" value=partners.0.partner_name %}</li>
                     </ul>
                 {% else %}
                     <img src="{{ object.logo }}">
                     {% for partner in partners %}
-                        <ul class="list-group">
-                            <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Partner Name" value=partner.partner_name %}</li>
+                        <ul>
+                            <li>{% include 'wsil/detail-list.html' with key="Partner Name" value=partner.partner_name %}</li>
                         </ul>
                     {% endfor %}
                 {% endif %}

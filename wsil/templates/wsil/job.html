@@ -29,11 +29,11 @@
             </div>
         </div>
         <div class="row">
-            <ul class="list-group">
-                <li class="list-group-item"><a href="{{ object.company_url }}">{% include 'wsil/detail-list.html' with key="Company Name" value=object.company_name %}</a></li>
-                <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Location" value=object.location_name %}</li>
-                <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Date" value=object.post_date %}</li>
-                <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Language" value=object.lang %}</li>
+            <ul>
+                <li><a href="{{ object.company_url }}">{% include 'wsil/detail-list.html' with key="Company Name" value=object.company_name %}</a></li>
+                <li>{% include 'wsil/detail-list.html' with key="Location" value=object.location_name %}</li>
+                <li>{% include 'wsil/detail-list.html' with key="Date" value=object.post_date %}</li>
+                <li>{% include 'wsil/detail-list.html' with key="Language" value=object.lang %}</li>
 
             </ul>
         </div>

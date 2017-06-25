@@ -23,38 +23,44 @@
     </div>
     <div class="container">
         <ul class="nav nav-tabs">
-            <li class="lang-tabbar active"><a data-toggle="tab" href="#home">Statistics</a></li>
-            <li class=" lang-tabbar"><a data-toggle="tab" href="#menu1">Details</a></li>
-            <li class=" lang-tabbar"><a data-toggle="tab" href="#menu2">Jobs</a></li>
-            <li class=" lang-tabbar"><a data-toggle="tab" href="#menu3">Courses</a></li>
+            <li style="font-weight: bold" class="lang-tabbar active"><a data-toggle="tab" href="#home">Statistics</a></li>
+            <li style="font-weight: bold"class=" lang-tabbar"><a data-toggle="tab" href="#menu1">Details</a></li>
+            <li style="font-weight: bold"class=" lang-tabbar"><a data-toggle="tab" href="#menu2">Jobs</a></li>
+            <li style="font-weight: bold"class=" lang-tabbar"><a data-toggle="tab" href="#menu3">Courses</a></li>
         </ul>
         <div class="tab-content">
             <div id="home" class="tab-pane fade in active">
                 <div class="col-md-12 page">
+                    <div class="row">
                     <div class="col-md-6">
+                        <br>
                         <h4>Interest over time for {{ object.name | upper }}</h4>
+                        </hr>
                         <div id="interestTimeScatter"></div>
-                        <hr/>
-                        <h4>Interest by region for {{ object.name | upper }}</h4>
-                        <div id="interestRegionLang"></div>
                     </div>
-                    <div class="col-md-6">
+                        <div class="col-md-1">
+                            </br></br></br></br>
                         {% include 'wsil/highlights-rows.html' with description="Question on it" value=question_count %}
                         {% include 'wsil/highlights-rows.html' with description="Jobs for it" value=jobs.count %}
                         {% include 'wsil/highlights-rows.html' with description="Courses for it" value=courses.count %}
-                    </div>
+                        </div>
+                        <div class="col-md-5">
+                         <br>
+                        <h4>Interest by region for {{ object.name | upper }}</h4>
+                        <div id="interestRegionLang"></div>
+                        </div>
+                   </div>
                 </div>
             </div>
             <div id="menu1" class="tab-pane fade">
                 <div class="col-md-12 page">
-                    <ul class="top-lang-list">
                         <h3 style="color:black">Details</h3>
                         <br/>
                         {% if details %}
                             <div class="row">
-                                <ul class="list-group">
+                                <ul >
                                     {% for field, value in details %}
-                                        <li class="list-group-item">
+                                        <li>
                                         {% include 'wsil/detail-list.html' with key=field value=value %}
                                         </li>
                                     {% endfor %}
@@ -64,33 +70,38 @@
                         {% else %}
                             <h4>No Data Available</h4>
                         {% endif %}
-                    </ul>
                 </div>
             </div>
 
             <div id="menu2" class="tab-pane fade">
                 <div class="col-md-12 page">
-                    <h4>Jobs</h4>
-                    <br />
+                </br>
+                <h3>JOBS</h3>
                     {% if jobs.count == 0 %}
                         <h5>No jobs available for {{ object.name }}</h5>
                     {% else %}
-                        <h5>Found {{ jobs.count }} job{{ jobs | pluralize }}:</h5>
+                        <h6> {{ jobs.count }} Job{{ jobs | pluralize }} Found </h6>
+                                                    <br>
+
                         {% for job in jobs %}
                             <div class="row">
-                                <h6>
+                                <h5>
                                     <a href="{% url 'job_detail' job.id %}">
                                         {{ job.job_title }}
                                     </a>
-                                </h6>
+                                </h5>
+
                                 <div class="col-sm-12">
-                                    {{ job.description | truncatechars:150 |striptags}}
+                                    <span style="font-weight: bolder">{{ job.description | truncatechars:200 |striptags}}</span>
                                     <div class="row">
-                                        <div class="col-sm-4">Date:</div>
+                                                                            </br>
+
+                                        <div class="col-sm-4"><span style="font-weight: bold">Date:</span></div>
                                         <div class="col-sm-8">{{ job.post_date }}</div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-4">Company:</div>
+
+                                        <div class="col-sm-4"><span style="font-weight: bold">Company:</span></div>
                                         <div class="col-sm-8">
                                             <a href="{{ job.company_url }}">
                                                 {{ job.company_name }}
@@ -105,31 +116,34 @@
                     {% endif %}
                 </div>
             </div>
-
-            <div id="menu3" class="tab-pane fade">
+           <div id="menu3" class="tab-pane fade img-rounded">
                 <div class="col-md-12 page">
-                    <h4>Courses</h4>
-                    <br />
+                    <br>
+                    <h3>Courses</h3>
                     {% if courses.count == 0 %}
                         <h5>No courses available for {{ object.name }}</h5>
                     {% else %}
-                        <h5>Found {{ courses.count }} course{{ courses | pluralize }}:</h5>
+                        <h5>{{ courses.count }} course{{ courses | pluralize }} Found </h5>
                         {% for course in courses %}
                             <div class="row">
-                                <h6>
+                                <h5>
                                     <a href="{% url 'course_detail' course.course_id %}">
                                         {{ course.slug }}
                                     </a>
-                                </h6>
+                                </h5>
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        {{ course.description | truncatechars:150 |striptags}}
+                                    <div class="col-md-1">
                                     </div>
+
+                                    <div class="col-md-10">
+                                <span style="font-weight: bolder">{{ course.description | truncatechars:200 |striptags}}</span>                                    </div>
+                                </br>
                                 </div>
-                                <ul class="list-group">
-                                    <li class="list-group-item">{% include 'wsil/detail-list.html' with key="Course Type" value=course.course_type %}</li>
-                                </ul>
+                                                                </br>
+
+                                    <span>{% include 'wsil/detail-list.html' with key="Course Type" value=course.course_type %}</span>
                             </div>
+
                             <hr />
                         {% endfor %}
                     {% endif %}
