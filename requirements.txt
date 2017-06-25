@@ -11,3 +11,4 @@ scrapy-djangoitem
 djangorestframework
 django-cors-headers
 pytrends
+requests

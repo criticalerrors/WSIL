@@ -1,5 +1,4 @@
 {% extends "wsil/base.html" %}
-
 {% load render_bundle from webpack_loader %}
 {% load static %}
 {% block title %}
@@ -38,29 +37,28 @@
 
 
         <div class="col-md-8">
-            <div class="row page">
-                <div class="col-sm-8">
+            <div class="row img-rounded page">
+                <div class="col-sm-12">
                     <h4>Repository count per language</h4>
                     <div id="barPlot"></div>
-                </div>
-                <div class="col-sm-4">
-                    {% include 'wsil/highlights-rows.html' with description="Total Languages" value=languagecount %}
+                     {% include 'wsil/highlights-rows.html' with description="Total Languages" value=languagecount %}
                     {% include 'wsil/highlights-rows.html' with description="Total Framework" value=fwcount %}
-
                 </div>
             </div>
+
         </div>
 
 
         <div class="col-md-2">
 
-            <div class="page">
+            <div class="img-rounded page">
                 <div id="search-bar" class="search-box">
 
                 </div>
                 {% render_bundle 'main'%}
 
             </div>
+            <p style="color:ghostwhite"> Search other languages </p>
         </div>
 
     </div>

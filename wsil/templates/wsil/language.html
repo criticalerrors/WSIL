@@ -22,32 +22,41 @@
         </div>
     </div>
     <div class="container">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs ">
             <li class="lang-tabbar active"><a data-toggle="tab" href="#home">Statistics</a></li>
             <li class=" lang-tabbar"><a data-toggle="tab" href="#menu1">Frameworks</a></li>
             <li class=" lang-tabbar"><a data-toggle="tab" href="#menu2">Jobs</a></li>
             <li class=" lang-tabbar"><a data-toggle="tab" href="#menu3">Courses</a></li>
         </ul>
-        <div class="tab-content">
+        <div class="tab-content ">
             <div id="home" class="tab-pane fade in active">
-                <div class="col-md-12 page">
+                <div class="col-md-12 page img-rounded page">
+                   <div class="row">
                     <div class="col-md-6">
+                        <br>
                         <h4>Interest over time for {{ l_title | upper }}</h4>
                         <hr/>
                         <div id="interestTimeScatter"></div>
-                        <h4>Interest by region for {{ l_title | upper }}</h4>
-                        <div id="interestRegionLang"></div>
+
                     </div>
-                    <div class="col-md-6">
-                        {% include 'wsil/highlights-rows.html' with description="Question on it" value=question_count %}
+                         <div class="col-md-1">
+                         </br></br></br></br>
+                       {% include 'wsil/highlights-rows.html' with description="Question on it" value=question_count %}
                         {% include 'wsil/highlights-rows.html' with description="Jobs for it" value=jobs.count %}
                         {% include 'wsil/highlights-rows.html' with description="Course for it" value=courses.count %}
                     </div>
+                    <div class="col-md-5">
+                         <br>
+                         <h4>Interest by region for {{ l_title | upper }}</h4>
+                        <div id="interestRegionLang"></div>
+
+                    </div>
+                   </div>
+
                 </div>
             </div>
             <div id="menu1" class="tab-pane fade">
-                <div class="col-md-12 page">
-                    <ul class="top-lang-list">
+                <div class="col-md-12 page list-group">
                         <h3 style="color:black">List of {{ l_title }} frameworks</h3>
                         <br/>
                         {% if not fwls %}
@@ -58,7 +67,6 @@
                                 {% include 'wsil/list-link.html' with url=url_value counter=forloop.counter name=fwl.name description=fwl.description %}
                             {% endfor %}
                         {% endif %}
-                    </ul>
                 </div>
             </div>
 

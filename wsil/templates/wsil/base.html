@@ -18,7 +18,7 @@
         <title>{% block title %}{% endblock %}</title>
     {% endblock %}
 </head>
-<body style="background-image: url({% static 'img/sfondo.jpg'%})">
+<body style="background-color: #2C2C2C">
 <div class="container-fluid"><!--Container principale-->
 {% block container %}
 
@@ -36,7 +36,7 @@
 
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav navbar-right">
-						<li class="active">
+						<li class="img-rounded page active">
 							<a href="{% url 'main_home' %}">HOME</a>
 						</li>
 						<li>

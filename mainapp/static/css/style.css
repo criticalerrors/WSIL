@@ -79,7 +79,7 @@ body {
 html {
     width: 100%;
     height: 100%;
-    background-image: url("../img/sfondo.jpg");
+    background-color: #2C2C2C;
 }
 
 h1,
@@ -676,8 +676,7 @@ hr {
     display: block;
     max-width: 100%;
     height: auto;
-    background: url(../img/sfondo.jpg) no-repeat ;
-}
+    }
 
 #intro.intro {
     padding:20% 0 0 0;

@@ -1,10 +1,6 @@
-<h5>
-    <li class="list-link">
-        <a href="{{ url }}">
-            <h4>{{ counter }} -{{ name }}</h4>
-        </a>
-    </li>
-</h5>
-{% if description %}
-<p>{{ description }}</p>
+          <a href="{{ url }}" style="border-left: 0 none; border-right: 0 none" class="list-group-item list-group-item-action flex-column align-items-start ">
+    <h4 style="font-weight: bold;color: black;">{{ name }}</h4>
+                    {% if description %}  <p class="mb-1"STYLE="font-weight: bold">{{ description }}</p>
 {% endif %}
+        </a>
+<!----!>
