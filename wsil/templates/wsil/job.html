@@ -21,25 +21,28 @@
 
     </div>
     <div class="container page">
-        <h1>{{ object.job_title }}</h1>
+    <br>
+        <h2>{{ object.job_title }}</h2>
         <div class="row">
             <div class="col-md-12">
                 <h4>by</h4>
-                <h3><a href="{{ object.company_url }}">{{ object.company_name }}</a></h3>
+                <h5><a href="{{ object.company_url }}">{{ object.company_name }}</a></h5><br>
             </div>
         </div>
         <div class="row">
-            <ul>
-                <li><a href="{{ object.company_url }}">{% include 'wsil/detail-list.html' with key="Company Name" value=object.company_name %}</a></li>
-                <li>{% include 'wsil/detail-list.html' with key="Location" value=object.location_name %}</li>
-                <li>{% include 'wsil/detail-list.html' with key="Date" value=object.post_date %}</li>
-                <li>{% include 'wsil/detail-list.html' with key="Language" value=object.lang %}</li>
+            <div class="col-md-2"></div>
+            <div class="col-md-8"> <table class="table table-striped">
+                <tr><a href="{{ object.company_url }}">{% include 'wsil/detail-list.html' with key="Company Name" value=object.company_name %}</a></tr>
+                <tr>{% include 'wsil/detail-list.html' with key="Location" value=object.location_name %}</tr>
+                <tr>{% include 'wsil/detail-list.html' with key="Date" value=object.post_date %}</tr>
+                <tr>{% include 'wsil/detail-list.html' with key="Language" value=object.lang %}</tr>
 
-            </ul>
-        </div>
+            </table>
+        <div/>
+                <div class="col-md-2"></div>
         <div class="row">
-            <p>
-                {{ object.description | striptags }}
+            <p style="font-weight: bold;text-align: justify">
+                {{ object.description | truncatechars:400 | striptags }}
             </p>
         </div>
         {% if partners %}

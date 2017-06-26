@@ -23,45 +23,49 @@
     <div class="container page">
         <div class="row">
             <div class="col-md-4">
-                <img src="{{ object.photo_url }}" />
-            </div>
-            <div class="col-md-8">
-                <h2><a href="{{ object.url }}">{{ object.slug }}</a></h2>
-            </div>
-        </div>
-        <div class="row">
-            <ul>
-                <li>{% include 'wsil/detail-list.html' with key="Course Type" value=object.course_type %}</li>
-                <li>{% include 'wsil/detail-list.html' with key="Workload" value=object.workload %}</li>
-                <li>{% include 'wsil/detail-list.html' with key="Source" value=object.source %}</li>
-            </ul>
-        </div>
-        <div class="row">
-            <p>
-                {{ object.description | striptags }}
-            </p>
-        </div>
-        {% if partners %}
-            <div class="row">
+                <img style="max-width:200px;max-height: 200px" src="{{ object.photo_url }}" />
+                <h3><a href="{{ object.url }}">{{ object.slug }}</a></h3></div>
+               <div class="col-md-4">
+                   {% if partners %}
+                       <br><br>
                 <h6>Partner{{ partners | pluralize }}</h6>
                 {% if partners.count <= 1 %}
                     <img src="{{ object.logo }}">
-                    <ul>
-                        <li>{% include 'wsil/detail-list.html' with key="Partner Name" value=partners.0.partner_name %}</li>
-                    </ul>
+                    <br><br>
+                    <table class="table table-striped">
+                        <tr>{% include 'wsil/detail-list.html' with key="Partner Name" value=partners.0.partner_name %}</tr>
+                    </table>
                 {% else %}
                     <img src="{{ object.logo }}">
                     {% for partner in partners %}
-                        <ul>
-                            <li>{% include 'wsil/detail-list.html' with key="Partner Name" value=partner.partner_name %}</li>
-                        </ul>
+                    <table class="table table-striped">
+                            <tr>{% include 'wsil/detail-list.html' with key="Partner Name" value=partner.partner_name %}</tr>
+                    </table>
                     {% endfor %}
                 {% endif %}
-            </div>
         {% endif %}
+               </div>
+         <div class="col-md-4">
+             <br><br>
+            <table class="table table-striped">
+                <tr>{% include 'wsil/detail-list.html' with key="Course Type" value=object.course_type %}</tr>
+                <tr>{% include 'wsil/detail-list.html' with key="Workload" value=object.workload %}</tr>
+                <tr>{% include 'wsil/detail-list.html' with key="Source" value=object.source %}</tr>
+            </table>
+
+            </div>
+        </div>
+    <div class="row">
+
+        <div class="col-md-2"></div>
+            <div class="col-md-8 panel panel-primary">
+             <div class="panel-body"><p style="font-weight: bold;text-align: justify">{{ object.description | striptags }}</p>
+             </div>
+            </div>
+    <div class="col-md-2"></div>
+
     </div>
-
-
+        </div>
 
 {% endblock %}
 
