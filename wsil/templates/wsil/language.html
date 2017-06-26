@@ -8,7 +8,7 @@
 {% endblock %}
 {% block head %}
     {{ block.super }}
-    <script src="{% static 'js/plotly-latest.min.js' %}"></script>
+    <script src="{% static 'js/plotly-latest.min.js' %}" xmlns="http://www.w3.org/1999/html"></script>
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
 {% endblock %}
@@ -76,7 +76,7 @@
                     {% if jobs.count == 0 %}
                         <h5>No jobs available for {{ l_title }}</h5>
                     {% else %}
-                        <h6> {{ jobs.count }} Job{{ jobs | pluralize }} Found </h6>
+                        <h6><span class="badge"> {{ jobs.count }}</span> Job{{ jobs | pluralize }} Found for {{ l_title | upper }} </h6>
                                                     <br>
 
                         {% for job in jobs %}
@@ -120,7 +120,7 @@
                     {% if courses.count == 0 %}
                         <h5>No courses available for {{ l_title }}</h5>
                     {% else %}
-                        <h5>{{ courses.count }} course{{ courses | pluralize }} Found </h5>
+                        <h5><span class="badge">{{ courses.count }}</span> course{{ courses | pluralize }} Found for {{ l_title | upper }} </h5>
                         {% for course in courses %}
                             <div class="row">
                                 <h5>

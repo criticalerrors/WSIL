@@ -54,18 +54,24 @@
             </div>
             <div id="menu1" class="tab-pane fade">
                 <div class="col-md-12 page">
+                <br>
                         <h3 style="color:black">Details</h3>
                         <br/>
                         {% if details %}
                             <div class="row">
-                                <ul >
+                                <div class="col-md-2"></div>
+                               <div class="col-md-8">
+                                   <table class="table table-striped">
+
                                     {% for field, value in details %}
-                                        <li>
-                                        {% include 'wsil/detail-list.html' with key=field value=value %}
-                                        </li>
+                                      <tr>
+                                          {% include 'wsil/detail-list.html' with key=field value=value %}
+                                      </tr>
                                     {% endfor %}
 
-                                </ul>
+                                </table>
+                               </div>
+                            <div class="col-md-2"></div>
                             </div>
                         {% else %}
                             <h4>No Data Available</h4>
@@ -80,7 +86,7 @@
                     {% if jobs.count == 0 %}
                         <h5>No jobs available for {{ object.name }}</h5>
                     {% else %}
-                        <h6> {{ jobs.count }} Job{{ jobs | pluralize }} Found </h6>
+                        <h6> <span class="badge"> {{ jobs.count }}</span> Job{{ jobs | pluralize }} Found for {{object.name | upper }} </h6>
                                                     <br>
 
                         {% for job in jobs %}
@@ -123,7 +129,7 @@
                     {% if courses.count == 0 %}
                         <h5>No courses available for {{ object.name }}</h5>
                     {% else %}
-                        <h5>{{ courses.count }} course{{ courses | pluralize }} Found </h5>
+                        <h5><span class="badge">{{ courses.count }}</span> course{{ courses | pluralize }} Found for {{object.name | upper }} </h5>
                         {% for course in courses %}
                             <div class="row">
                                 <h5>
