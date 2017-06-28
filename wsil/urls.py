@@ -9,7 +9,6 @@ urlpatterns = [
     url(r'^detailfw/(?P<pk>[0-9]+)$', views.FrameworkDetail.as_view(), name='detail_fw'),  # TODO
     url(r'^job/(?P<pk>[0-9]+)$', views.JobDetail.as_view(), name='job_detail'),  # TODO
     url(r'^course/(?P<pk>[a-zA-Z0-9\-\_]+)$', views.CourseDetail.as_view(), name='course_detail'),
-    url(r'^about/$', views.MainHomeView.as_view(), name='about_page'), # TODO
     # API
     url(r'^api/suggest/(?P<kw>[a-z]+)$', views.SuggestedView.as_view(), name="suggestion_api"),
     url(r'^api/top10/$', views.Top10ForCharts.as_view(), name="top10charts"),
