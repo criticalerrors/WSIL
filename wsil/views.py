@@ -54,6 +54,7 @@ class FrameworkDetail(DetailView):
         except:
             pass
 
+        context['question_count'] = QuestionOnIt.get_count_for_lang(fw_name).count
         context['jobs'] = Job.get_all_job_for(fw_name)
         context['courses'] = Course.get_courses_for_lang(fw_name)
         return context
